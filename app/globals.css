@@ -1,0 +1,601 @@
+@import 'tailwindcss';
+@import '../styles/tokens.css';
+
+/* Texture utilities are part of the public design API: ship them even before a
+   page happens to use them (design system is consumed by other files). */
+@source inline("bg-grain bg-grid bg-grid-sm bg-vignette bg-moss-wash bg-paper-wash border-hairline");
+
+/* ==========================================================================
+   KindleForge — design tokens (Tailwind v4 `@theme`)
+   --------------------------------------------------------------------------
+   Mood: paper & ink × moss green. A late-night study, not a SaaS dashboard.
+   Every value here is deliberately warm-neutral; the only saturated colour is
+   `moss-500`, used for exactly one job per view (CTA, highlight, key number).
+
+   Layers (Tailwind v4 order): theme → base → components → utilities.
+   `styles/tokens.css` holds runtime aliases + `.kf-*` component classes.
+   Legacy token names (ink-*, moss-*, paper, paper-dim, clay, font-*) are frozen
+   and must keep working — the frontend already targets them.
+   ========================================================================== */
+
+@theme static {
+  /* ---- typefaces --------------------------------------------------------
+     No webfont downloads and no CDN: the stack degrades to what the reader
+     already has. CJK titles want a Song/Serif face; body text stays sans. */
+  --font-sans:
+    'Inter', 'Inter var', ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-serif:
+    'Source Han Serif SC', 'Source Han Serif', 'Noto Serif SC', 'Noto Serif CJK SC', 'Songti SC',
+    STSong, STSongti-SC-Regular, SimSun, Georgia, 'Times New Roman', serif;
+  --font-mono:
+    ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono',
+    monospace;
+
+  /* ---- ink (surfaces) --------------------------------------------------- */
+  --color-ink-950: #070b09;
+  --color-ink-900: #0b100e;
+  --color-ink-800: #111815;
+  --color-ink-700: #18211d;
+  --color-ink-600: #243029;
+  --color-ink-500: #33433a;
+
+  /* ---- moss (accent) ---------------------------------------------------- */
+  --color-moss-400: #bff78d;
+  --color-moss-500: #a8f06a;
+  --color-moss-600: #86d94a;
+  --color-moss-700: #6cbb38;
+  /* Only for moss on a light surface (logo-light, email, print). */
+  --color-moss-800: #3f7a1f;
+  /* Tinted moss background, e.g. quiet success rows. */
+  --color-moss-900: #16240f;
+
+  /* ---- paper (text) ----------------------------------------------------- */
+  --color-paper: #f4f0e6;
+  --color-paper-dim: #d9d3c4;
+  /* tertiary copy: 6.81:1 on ink-950, 6.20:1 on ink-800 */
+  --color-paper-mute: #9d9789;
+  /* placeholder / disabled copy only: 5.38:1 on ink-950, 4.90:1 on ink-800 */
+  --color-paper-faint: #8a8578;
+
+  /* ---- warm spokes ------------------------------------------------------ */
+  --color-clay: #e8a87c;
+  --color-clay-deep: #c9834f;
+  /* errors only — a warm ember, never a stop-sign red */
+  --color-ember: #fb7f6d;
+
+  /* ---- semantic aliases (use these for new work) ------------------------ */
+  --color-canvas: #070b09;
+  --color-surface: #111815;
+  --color-surface-raised: #18211d;
+  --color-fg: #f4f0e6;
+  --color-fg-muted: #d9d3c4;
+  --color-fg-subtle: #9d9789;
+  /* decorative hairline; for form boundaries use --kf-line-strong (3.16:1) */
+  --color-line: color-mix(in srgb, #f4f0e6 12%, transparent);
+  --color-line-strong: #666761;
+  --color-accent: #a8f06a;
+  --color-on-accent: #070b09;
+  --color-warn: #e8a87c;
+  --color-danger: #fb7f6d;
+  --color-focus: #a8f06a;
+
+  /* ---- type scale -------------------------------------------------------
+     Sizes are fluid clamps so the same markup works at 390px and 1440px.
+     Reading measure stays capped by `.kf-measure` (68ch), never by font size. */
+  --text-display: clamp(2.6rem, 1.45rem + 4.6vw, 4.75rem);
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.032em;
+  --text-display--font-weight: 600;
+
+  --text-h1: clamp(2.1rem, 1.5rem + 2.6vw, 3.25rem);
+  --text-h1--line-height: 1.12;
+  --text-h1--letter-spacing: -0.026em;
+  --text-h1--font-weight: 600;
+
+  --text-h2: clamp(1.6rem, 1.3rem + 1.4vw, 2.25rem);
+  --text-h2--line-height: 1.2;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h2--font-weight: 600;
+
+  --text-h3: 1.375rem;
+  --text-h3--line-height: 1.35;
+  --text-h3--letter-spacing: -0.012em;
+  --text-h3--font-weight: 600;
+
+  --text-h4: 1.125rem;
+  --text-h4--line-height: 1.45;
+  --text-h4--letter-spacing: -0.006em;
+  --text-h4--font-weight: 600;
+
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.75;
+  --text-body-lg--letter-spacing: 0em;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.75;
+  --text-body--letter-spacing: 0em;
+
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.6;
+  --text-small--letter-spacing: 0.002em;
+
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.55;
+  --text-caption--letter-spacing: 0.01em;
+
+  --text-mono: 0.875rem;
+  --text-mono--line-height: 1.6;
+  --text-mono--letter-spacing: 0em;
+
+  --leading-reading: 1.8;
+  --leading-prose: 1.72;
+  --tracking-display: -0.032em;
+  --tracking-eyebrow: 0.22em;
+
+  /* ---- radii ------------------------------------------------------------ */
+  --radius-card: 20px;
+  --radius-field: 12px;
+  --radius-sheet: 28px;
+  --radius-frame: 32px;
+  --radius-pill: 999px;
+
+  /* ---- shadows (few, soft, never glassy) -------------------------------- */
+  --shadow-soft: 0 1px 0 rgb(244 240 230 / 0.035) inset, 0 10px 30px -22px rgb(0 0 0 / 0.9);
+  --shadow-lift: 0 24px 60px -32px rgb(0 0 0 / 0.95), 0 1px 0 rgb(244 240 230 / 0.04) inset;
+  --shadow-halo: 0 0 0 3px color-mix(in srgb, #a8f06a 20%, transparent);
+  --shadow-moss: 0 10px 34px -18px rgb(168 240 106 / 0.5);
+
+  /* ---- motion ----------------------------------------------------------- */
+  --ease-kf: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --default-transition-duration: 160ms;
+  --default-transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --animate-fade-in: kf-fade-in 200ms var(--ease-kf) both;
+  --animate-fade-up: kf-fade-up 200ms var(--ease-kf) both;
+  --animate-scale-in: kf-scale-in 180ms var(--ease-kf) both;
+  --animate-pulse-soft: kf-pulse 2.6s ease-in-out infinite;
+  --animate-caret: kf-caret 1.05s steps(1, end) infinite;
+  --animate-sweep: kf-sweep 1.5s ease-in-out infinite;
+  --animate-shimmer: kf-shimmer 1.6s linear infinite;
+  --animate-spin-slow: kf-spin 1s linear infinite;
+
+  /* ---- spacing (named steps on top of Tailwind's 4px base) --------------- */
+  --spacing-gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --spacing-section: clamp(4rem, 9vw, 7.5rem);
+  --spacing-card: 1.75rem;
+
+  /* ---- containers ------------------------------------------------------- */
+  --container-page: 76rem;
+  --container-wide: 88rem;
+  --container-prose: 68ch;
+}
+
+/* ==========================================================================
+   Keyframes
+   ========================================================================== */
+
+@keyframes kf-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes kf-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes kf-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes kf-sweep {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(280%);
+  }
+}
+
+@keyframes kf-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes kf-shimmer {
+  from {
+    background-position: 180% 0;
+  }
+  to {
+    background-position: -80% 0;
+  }
+}
+
+@keyframes kf-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes kf-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   Base layer
+   ========================================================================== */
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --bg: var(--color-ink-950);
+    --fg: var(--color-paper);
+  }
+
+  * {
+    border-color: color-mix(in srgb, var(--color-paper) 12%, transparent);
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scrollbar-gutter: stable;
+    scroll-padding-block-start: calc(var(--kf-header-h) + 1rem);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    min-block-size: 100dvh;
+    margin: 0;
+    background-color: var(--color-ink-950);
+    /* A faint moss light from the top + paper grain; no bitmap assets. */
+    background-image:
+      radial-gradient(
+        1100px 720px at 50% -12%,
+        color-mix(in srgb, var(--color-moss-500) 7%, transparent),
+        transparent 62%
+      ),
+      var(--kf-grain);
+    background-repeat: no-repeat, repeat;
+    background-size:
+      auto,
+      200px 200px;
+    background-attachment: scroll, scroll;
+    color: var(--color-paper);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Chinese headings default to the serif stack; utilities can opt out. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    color: var(--color-paper);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--text-h1);
+    line-height: var(--text-h1--line-height);
+    letter-spacing: var(--text-h1--letter-spacing);
+  }
+
+  h2 {
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+  }
+
+  h3 {
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+  }
+
+  h4 {
+    font-size: var(--text-h4);
+    line-height: var(--text-h4--line-height);
+  }
+
+  h5,
+  h6 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-small);
+    letter-spacing: 0.01em;
+    color: var(--color-paper-dim);
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+  }
+
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+  }
+
+  small {
+    font-size: var(--text-small);
+  }
+
+  strong,
+  b {
+    font-weight: 600;
+    color: var(--color-paper);
+  }
+
+  ::selection {
+    background-color: var(--color-moss-500);
+    color: var(--color-ink-950);
+  }
+
+  ::placeholder {
+    color: var(--color-paper-faint);
+    opacity: 1;
+  }
+
+  /* Keyboard focus: 2px moss ring, offset so it never touches the glyphs.
+     (moss-500 vs ink-950 = 14.46:1 — comfortably above the 3:1 non-text bar.) */
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  [id] {
+    scroll-margin-block-start: calc(var(--kf-header-h) + 1.5rem);
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--kf-line);
+  }
+
+  img,
+  svg,
+  video,
+  canvas {
+    max-inline-size: 100%;
+  }
+
+  svg {
+    flex: none;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  abbr[title] {
+    text-decoration: underline dotted;
+    text-underline-offset: 0.2em;
+    cursor: help;
+  }
+
+  /* Thin, quiet scrollbars that fade into the ink. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-ink-600) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    inline-size: 10px;
+    block-size: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-ink-600);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    border-radius: var(--radius-pill);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-ink-500);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+/* ==========================================================================
+   Texture & atmosphere utilities
+
+   Used as `bg-grain`, `bg-grid`, `bg-vignette`, `bg-moss-wash`, `bg-paper-wash`.
+   `text-balance` / `text-pretty` ship with Tailwind v4 and are the punctuation
+   of choice for headings and paragraphs respectively.
+   ========================================================================== */
+
+@utility bg-grain {
+  background-image: var(--kf-grain);
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+@utility bg-grid {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-paper) 5%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-paper) 5%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 72px 72px;
+}
+
+@utility bg-grid-sm {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-paper) 4%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-paper) 4%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 32px 32px;
+}
+
+@utility bg-vignette {
+  background-image: radial-gradient(
+    130% 100% at 50% 0%,
+    transparent 38%,
+    rgb(0 0 0 / 0.55) 100%
+  );
+}
+
+@utility bg-moss-wash {
+  background-image: radial-gradient(
+    85% 120% at 50% -15%,
+    color-mix(in srgb, var(--color-moss-500) 12%, transparent),
+    transparent 62%
+  );
+}
+
+@utility bg-paper-wash {
+  background-image: radial-gradient(
+    80% 120% at 50% 0%,
+    color-mix(in srgb, var(--color-paper) 5%, transparent),
+    transparent 62%
+  );
+}
+
+/* Hairline that survives on top of ink-800 and ink-950 alike. */
+@utility border-hairline {
+  border-color: var(--kf-line);
+}
+
+/* ==========================================================================
+   Motion, contrast and print guards (unlayered on purpose: must win)
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .kf-btn:active,
+  .kf-card-interactive:hover,
+  .kf-card-interactive:active {
+    transform: none;
+  }
+
+  .kf-progress[data-state='indeterminate'] .kf-progress-bar {
+    width: 100%;
+    transform: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --kf-line: color-mix(in srgb, var(--color-paper) 28%, transparent);
+    --kf-line-strong: #8a8578;
+    --color-paper-mute: #c9c3b5;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+    color: #111;
+  }
+
+  .kf-card,
+  .kf-btn {
+    box-shadow: none;
+  }
+}

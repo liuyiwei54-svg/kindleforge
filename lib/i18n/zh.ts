@@ -1,0 +1,672 @@
+/**
+ * Chinese dictionary — the source of truth for the dictionary shape.
+ * `en.ts` is typed against `typeof zh`, so a missing translation fails typecheck.
+ */
+const zh = {
+  brand: {
+    name: 'KindleForge',
+    tagline: '任何文件，都是 Kindle 上的一本好书',
+  },
+
+  meta: {
+    home: {
+      title: 'KindleForge — 把任何文件变成 Kindle 上最好读的那本书',
+      description:
+        '免费、开源的 Kindle 电子书转换器：EPUB / MOBI / AZW3 / PDF / DOCX / TXT / CBZ 互转，Kindle 专属中文排版。TXT / MD / HTML 转 EPUB 在浏览器本地完成，文件不上传。',
+    },
+    convert: {
+      title: '转换工作台 — EPUB / MOBI / AZW3 / PDF',
+      description:
+        '多文件批量转换成 Kindle 可读格式：拖入文件、选择设备预设与排版，TXT / MD / HTML → EPUB 全程本地完成，其余格式服务器转换、完成即删。',
+    },
+    green: {
+      title: '绿色与隐私 — 零留存、无追踪、可自托管',
+      description:
+        'KindleForge 如何做到文件不上传、服务器零留存、可一条命令自托管。关于能耗，我们只讲可以验证的部分。',
+    },
+    docs: {
+      title: 'API 文档 — 开放、无密钥、无注册',
+      description:
+        'KindleForge 转换 API：multipart POST 提交任务、轮询进度、下载结果。含错误码、限制、自托管与 Calibre 安装说明。',
+    },
+    pairTitle: '{from} 转 {to} — 免费、本地优先的 Kindle 转换',
+    pairDescription:
+      '在浏览器里把 {from} 转换成 {to}。{quality} 文件不会用于任何其他用途：本地路径不上传，服务器路径完成即删。',
+    ogAlt: 'KindleForge — 把任何文件变成 Kindle 上的一本好书',
+  },
+
+  code: {
+    copy: '复制',
+    copied: '已复制',
+  },
+
+  nav: {
+    converter: '转换器',
+    formats: '格式',
+    green: '绿色主张',
+    docs: 'API 文档',
+    github: 'GitHub',
+    githubLabel: 'GitHub 仓库（即将开源）',
+    menu: '菜单',
+    closeMenu: '关闭菜单',
+    skip: '跳到主要内容',
+    langSwitch: 'English',
+    langSwitchLabel: '切换成英文',
+    brandHome: 'KindleForge 首页',
+  },
+
+  hero: {
+    eyebrow: '本地优先 · 零广告 · 开源',
+    titleLead: '任何文件，',
+    titleAccent: '都是 Kindle 上的一本好书。',
+    sub: 'EPUB、MOBI、AZW3、PDF、DOCX、TXT、漫画——15 类输入、7 类输出，为 Kindle 重新排版再交付。TXT / Markdown / HTML 转 EPUB 全程在你的浏览器里完成，文件一个字节都不上传。',
+    ctaPrimary: '选择文件开始',
+    ctaSecondary: '直接打开工作台',
+    upload: {
+      title: '把文件拖到这里',
+      subtitle: '或点击选择 · 支持多选',
+      browse: '选择文件',
+      active: '松开即可添加',
+      accept: 'EPUB · MOBI · AZW/AZW3 · PDF · DOCX · ODT · TXT · MD · HTML · RTF · FB2 · CBZ/CBR · 图片',
+      localBadge: 'TXT / MD / HTML 可本地转换',
+      privacy: '不上传 · 不注册 · 无追踪',
+      opensHint: '选好文件后，工作台就在这里展开。',
+    },
+  },
+
+  trust: {
+    title: '为什么值得换过来',
+    items: {
+      local: {
+        value: '0 字节',
+        label: '本地模式的上传量',
+        note: 'TXT / MD / HTML → EPUB 在 Web Worker 内完成',
+      },
+      inputs: {
+        value: '{inputs} 类',
+        label: '输入格式',
+        note: '电子书、文档、纯文本、漫画、图片',
+      },
+      ads: {
+        value: '0',
+        label: '广告与追踪脚本',
+        note: '无分析、无第三方请求、无 Cookie 墙',
+      },
+      open: {
+        value: '100%',
+        label: '可自托管',
+        note: '无数据库、无账号，一条命令跑起来',
+      },
+    },
+  },
+
+  compare: {
+    eyebrow: '为什么换',
+    title: '三个维度，逐条对照',
+    sub: '对比不是为了证明别人差，而是把「云端结构上做不到」的三件事摆出来：文件不出本机、中文排版认真做、任何人都能审计并自托管。',
+    columns: {
+      dimension: '维度',
+      us: 'KindleForge',
+      them: '云端转换器（如 RunConvert）',
+    },
+    rows: [
+      {
+        key: 'quality',
+        dim: '质量',
+        us: [
+          'Kindle 设备预设：Paperwhite / Oasis / Scribe / 入门款一键匹配输出格式',
+          '中文排版到位：首行缩进 2em、两端对齐、中英混排、标点不落单',
+          '转换前可见章节数、字数、图片数与预计阅读时长',
+          '失败会说明哪一步、为什么、怎么改，而不是交给你一个坏文件',
+        ],
+        them: '通用转换管线：以「能转出来」为目标，排版参数以源文件为准，公开页面上没有看到 Kindle 设备预设或中文排版选项。',
+      },
+      {
+        key: 'coverage',
+        dim: '覆盖',
+        us: [
+          '15 类输入 / 7 类输出，能力矩阵公开可查，每一对都有独立页面',
+          '多文件批量转换，一键打包 ZIP 下载',
+          '整页漫画，支持从右到左翻页',
+          '开放的 HTTP API 与自托管，没有密钥、没有注册',
+        ],
+        them: '18 种电子书格式、单文件上限 1GB、云端队列（据其公开页面）。以网页使用为主，不提供自托管。',
+      },
+      {
+        key: 'green',
+        dim: '绿色 / 隐私',
+        us: [
+          'TXT / MD / HTML → EPUB 在浏览器里完成，0 字节上传，断网也能转',
+          '服务器零留存：系统临时目录、完成即删、无数据库',
+          '无广告、无分析脚本、无第三方请求',
+          '整条链路开源，可以自己部署、自己审计',
+        ],
+        them: '文件必须上传到云端；承诺 1 小时后删除（据其公开页面）；页面含广告；无法自托管。',
+      },
+    ],
+    footNote:
+      '对比基于 RunConvert 公开页面（2026-10 核对）与我们当前的实现。格式数量与能力矩阵直接来自本仓库 lib/engine/formats.ts，可自行核对。',
+    honest:
+      '我们没赢的地方写在这儿：对方输入扩展名更多（18 种 vs 我们 15 类），单文件上限更大（1 GB vs 200 MB）。如果这两点对你最重要，对方可能更合适。我们赌的是另一件事：同一本书，在 Kindle 上读起来更好。',
+  },
+
+  device: {
+    eyebrow: 'Kindle 上真实的样子',
+    title: '调到你觉得舒服，再开始转换',
+    sub: '下面不是截图，是用 CSS 画的 Kindle 屏。拖动参数，预览会实时变化——转换时这些值会原样写进 EPUB 的样式表。',
+    live: '实时预览',
+    controls: {
+      fontSize: '字号',
+      lineHeight: '行距',
+      indent: '首行缩进',
+      justify: '两端对齐',
+      fontFamily: '字体',
+      serif: '宋体（衬线）',
+      sans: '黑体（无衬线）',
+      off: '关',
+      on: '开',
+    },
+    sample: {
+      book: '夜航西飞',
+      author: '试读样章',
+      chapter: '第一章',
+      title: '海面在午夜之后安静下来',
+      paragraphs: [
+        '海面在午夜之后安静下来，像一张被反复抚平的纸。船上的灯只剩一盏，光落在桌角，把书页的边缘照得发亮。',
+        '他把书翻到折角的那一页，读出声音来。风从舷窗钻进来，把声音吹散，又被海浪接住。许多年里，他都是这样读完一本书的：在移动的地方，读一个不动的地方。',
+        '“第 3 章 · 潮汐表”，他在页边写下这行小字，然后合上书，等天亮。',
+      ],
+    },
+    footnote: 'Kindle 屏幕为模拟效果；真实设备会自动应用 KF8 排版引擎的字号与边距设置。',
+  },
+
+  matrix: {
+    eyebrow: '格式矩阵',
+    title: '15 类输入，7 类输出，逐对可查',
+    sub: '每一对转换都有自己的页面。标着「本地」的组合在浏览器里完成，标着「上传」的组合会交给服务器，任务完成即删除。',
+    searchLabel: '搜索格式',
+    searchPlaceholder: '试试 epub、漫画、pdf…',
+    kindsLabel: '按类型筛选',
+    kinds: {
+      all: '全部',
+      ebook: '电子书',
+      document: '文档',
+      text: '纯文本',
+      comic: '漫画',
+      image: '图片',
+    },
+    inputLabel: '输入',
+    outputsLabel: '输出',
+    local: '本地',
+    server: '上传',
+    popular: '热门转换',
+    noResult: '没有匹配的格式。试试「epub」或「pdf」，也可以直接打开工作台。',
+    openWorkspace: '打开工作台',
+    clickHint: '点击芯片进入该格式对的说明与上传页',
+  },
+
+  localMode: {
+    eyebrow: '本地模式',
+    title: '有些文件，根本不需要离开这台电脑',
+    sub: 'TXT、Markdown、HTML 转 EPUB 走的是浏览器的 Web Worker：读取、解析、生成 EPUB、下载，全部在本机内存里完成。服务器从头到尾没有见过你的文件。',
+    steps: [
+      { title: '拖入文件', body: '上传区识别扩展名，判断这一对转换能不能在本地完成。' },
+      { title: '看着它本地跑完', body: '界面会明确标注「本地处理 · 未上传」，进度条来自 Worker 的真实状态。' },
+      { title: '直接下载', body: 'EPUB 在浏览器里生成，点击即存盘。此时拔掉网线也不影响。' },
+    ],
+    verifyTitle: '怎么验证？',
+    verify: [
+      '打开开发者工具 → Network，转换时不会出现 /api/convert 请求。',
+      '或者干脆断网（关掉 Wi-Fi）再转一次，本地模式仍然可以下载。',
+      '界面上的「本地处理 · 未上传」标识只在 Worker 真正跑完时出现。',
+    ],
+    tableTitle: '哪些会离开本机',
+    tableColumns: { pair: '转换', where: '位置', note: '说明' },
+    localWhere: '本地 · 0 上传',
+    serverWhere: '服务器 · 完成即删',
+    localNote: '纯文本路径，浏览器内完成',
+    serverNote: '服务器端解析 · 完成即删',
+    note: '服务器路径的文件会写入系统临时目录（权限 0600），任务完成或 10 分钟后自动删除；不落数据库、不写日志。',
+    cta: '看看我们怎么处理隐私',
+  },
+
+  green: {
+    eyebrow: '绿色与隐私',
+    title: '不传，就是最干净的省电',
+    sub: '诚实地讲：转换要耗电，生成 EPUB 也需要 CPU。我们能做的是让这件事发生在你已有的设备上，而不是多开一台常驻服务器、多传一次文件。',
+    cards: [
+      {
+        title: '零留存',
+        body: '转换结果写进系统临时目录，完成或下载后到期删除。没有数据库、没有对象存储、没有「7 天后自动清理」的灰色地带。',
+      },
+      {
+        title: '无追踪',
+        body: '没有分析脚本、没有广告、没有第三方字体或 CDN。页面加载时唯一的请求来自本站。',
+      },
+      {
+        title: '可自托管',
+        body: '开源代码、无状态服务。你可以把它跑在自己的 NAS 或树莓派上，文件连「我们的服务器」都不经过。',
+      },
+    ],
+    selfHost: {
+      title: '一条命令，跑在自己的机器上',
+      body: '没有数据库、没有对象存储、没有账号系统。进程退出，临时文件随之清理。Calibre 是可选增强：装了就能多出 MOBI / AZW3 / PDF 输出路径。',
+      commands: ['npm install', 'npx next build', 'npx next start -p 3100'],
+      note: '系统要求：Node.js 20+。想让 MOBI / AZW3 可用，再装 Calibre（brew install --cask calibre）。',
+    },
+    energy: {
+      title: '能耗怎么算才诚实？',
+      body: '我们不会给出「每次转换节省 X 克二氧化碳」这种数字——它取决于你的电网、设备和文件大小。可以验证的是：本地模式少一次与服务端的往返上传，自托管少一台本来不需要常开的机器。剩下的，交给你的电表。',
+    },
+    cta: '阅读完整说明',
+  },
+
+  faq: {
+    eyebrow: '常见问题',
+    title: '把该说清楚的都说清楚',
+    items: [
+      {
+        q: '我的文件会被上传吗？',
+        a: '取决于格式组合。TXT / Markdown / HTML 转 EPUB 在浏览器内完成，文件不会离开你的电脑，断网也能用。其余组合（例如 EPUB → MOBI、PDF → EPUB）需要服务器，文件会上传到本机运行的服务端，任务完成或 10 分钟后删除，不落数据库、不写日志。界面会明确标注「本地处理 · 未上传」还是「上传」。',
+      },
+      {
+        q: '支持带 DRM 的电子书吗？',
+        a: '不支持，也不会去破解。DRM 是版权保护机制，绕过它既违反用户协议，也可能违反法律。亚马逊购买的电子书请在官方 App / 设备上阅读；如果你需要转换，请先从合法渠道导出无 DRM 的文件（例如作者或出版社提供的无加密版本）。检测到 DRM 时我们会直接拒绝并说明原因，而不是假装转换成功。',
+      },
+      {
+        q: '为什么你们不推荐 MOBI？',
+        a: 'MOBI 是 2000 年代的老格式，不支持现代排版能力（更好的字体、嵌入样式、复杂目录）。AZW3（KF8）在 2012 年之后的 Kindle 上都支持，EPUB 则是通用标准。我们保留 MOBI 输出，只为了照顾老设备和「必须传 MOBI」的场景；新设备建议直接选 AZW3 或 EPUB。',
+      },
+      {
+        q: '转换失败怎么办？',
+        a: '界面会给出错误码、发生原因和下一步建议。常见情况：文件加密或损坏（换一个来源重新导出）、缺少 Calibre（安装后重试）、文件过大（先拆分）、扫描 PDF 没有文字层（开启 OCR 或换源）。失败不会留下半个坏文件，也不会扣你什么。',
+      },
+      {
+        q: '可以批量转换吗？',
+        a: '可以。一次选多个文件，逐个转换、逐个显示进度，全部完成后可以一键打包成 ZIP 下载。单个文件失败不影响其他文件。',
+      },
+      {
+        q: '有 API 吗？',
+        a: '有。POST /api/convert 提交任务，GET /api/jobs/:id 轮询，GET /api/jobs/:id/download 下载，DELETE /api/jobs/:id 取消。没有密钥、没有注册，默认限制单文件 200MB。文档里有 curl 示例和完整错误码表。',
+      },
+      {
+        q: '真的更绿色吗？',
+        a: '只在我们能验证的地方这样说：本地模式省掉一次上传和一次服务器计算；自托管让你复用已有的机器；没有广告和追踪脚本，页面更轻。我们不量化碳排，因为那个数字取决于太多我们不知道的变量。',
+      },
+      {
+        q: '能自己部署吗？',
+        a: '可以。项目是一个普通的 Next.js 应用，没有数据库、没有队列服务。npm install、next build、next start 三步就能跑；Calibre 可选。README 里有完整的自托管说明。',
+      },
+    ],
+  },
+
+  cta: {
+    title: '把下一本书，做成 Kindle 上最好读的那本',
+    sub: '不用注册，不用把文件交给陌生人。',
+    primary: '开始转换',
+    secondary: '阅读 API 文档',
+  },
+
+  footer: {
+    tagline: '本地优先的电子书转换器。不追踪、不投广告、不留存你的文件。',
+    columns: {
+      product: '产品',
+      resources: '资源',
+      privacy: '隐私',
+    },
+    links: {
+      converter: '转换工作台',
+      formats: '格式矩阵',
+      pairPages: '格式对页面',
+      green: '绿色与隐私',
+      docs: 'API 文档',
+      selfHost: '自托管说明',
+      noTracking: '无追踪说明',
+      language: 'English',
+      github: 'GitHub',
+    },
+    bottom: '© 2026 KindleForge · 不自建分析 · 不投广告 · 不卖数据',
+    trademark: 'Kindle 是 Amazon.com, Inc. 的商标。本项目与 Amazon 无关联。',
+    built: '用 Next.js 构建，运行在你能看得见的地方。',
+  },
+
+  convert: {
+    title: '转换工作台',
+    sub: '文件只在需要时离开本机。TXT / MD / HTML → EPUB 全程本地完成，其余格式服务器转换、完成即删。',
+    backHome: '返回首页',
+    privacyBadge: '无追踪 · 无账号',
+    limits: '单文件 ≤ 200MB；结果在完成后 10 分钟内可再次下载。',
+    collapse: '收起',
+    openFull: '打开完整工作台',
+    matrixLive: '实时能力矩阵',
+    matrixBuiltin: '内置能力矩阵',
+    zipError: '打包下载失败，请单独下载文件。',
+    files: {
+      title: '待转换文件',
+      count: '{n} 个文件',
+      empty: '还没有文件。拖进来，或点击选择。',
+      addMore: '继续添加',
+      remove: '移除 {name}',
+      clear: '清空列表',
+      browse: '选择文件',
+      dropTitle: '拖入文件，开始转换',
+      dropSubtitle: '支持多选 · TXT / MD / HTML 可本地完成',
+      dropActive: '松开即可添加',
+      acceptNote: 'EPUB · MOBI · AZW/AZW3 · PDF · DOCX · ODT · TXT · MD · HTML · RTF · FB2 · CBZ/CBR · 图片',
+      size: '大小',
+      estimate: '预估',
+      estimateValue: '约 {minutes} 分钟阅读',
+      estimateUnknown: '待分析',
+      targetLabel: '{name} 的目标格式',
+      unsupported: '该输入不支持这个输出格式',
+    },
+    target: {
+      label: '输出格式',
+      hint: '只列出当前文件都支持的组合',
+      noFiles: '先添加文件，再选择输出格式',
+      noCommonTarget: '这些文件没有共同支持的输出格式，分开转换试试。',
+      localHint: '这个组合会在浏览器本地完成',
+      localOption: '本地',
+    },
+    device: {
+      label: 'Kindle 预设',
+      hint: '选择设备会自动匹配输出格式与排版',
+      current: '当前预设：{device}',
+    },
+    options: {
+      title: '排版选项',
+      indent: '首行缩进',
+      indentUnit: 'em',
+      lineHeight: '行距',
+      justify: '两端对齐',
+      font: '正文字体',
+      fontSerif: '宋体（衬线）',
+      fontSans: '黑体（无衬线）',
+      fontDefault: '跟随原文件',
+      toc: '生成目录',
+      cover: '保留封面',
+      manga: '漫画从右到左',
+      ocrTitle: '扫描件 OCR',
+      ocrToggle: '识别扫描件里的文字',
+      ocrLanguage: '识别语言',
+      ocrAuto: '自动（简体中文 + 英文）',
+      ocrChiSim: '简体中文',
+      ocrChiTra: '繁體中文',
+      ocrEnglish: 'English',
+      ocrJapanese: '日本語',
+      ocrKorean: '한국어',
+      ocrNote: 'OCR 在服务器端执行，需要 Tesseract；本地模式不支持。',
+      ocrUnavailable: '添加 PDF 或图片后可用。',
+      ocrHint: '检测到 PDF：扫描版没有文字层，不开启 OCR 只能得到整页图片。',
+      ocrEnable: '开启 OCR',
+      note: '这些参数会写入 EPUB 的样式表；不支持某项参数的目标格式会忽略它。',
+    },
+    start: '开始转换',
+    starting: '转换中…',
+    cancel: '取消',
+    cancelAll: '取消全部',
+    download: '下载',
+    retry: '重试',
+    again: '再转一本',
+    zip: '打包下载 ZIP（{n}）',
+    zipEmpty: '打包下载 ZIP',
+    status: {
+      idle: '等待',
+      preparing: '准备中',
+      uploading: '上传中',
+      running: '转换中',
+      local: '本地处理 · 未上传',
+      done: '完成',
+      error: '失败',
+      canceled: '已取消',
+    },
+    engine: '引擎',
+    warnings: '提示',
+    errorTitle: '转换失败',
+    errorHint: '建议',
+    fallback: '本地处理未完成，已改为上传到本机服务器处理；文件在任务完成后删除。',
+    fallbackBadge: '已回落到服务器',
+    localBadge: '本地处理 · 未上传',
+    serverBadge: '上传 · 完成即删',
+    allDone: '全部完成',
+    partialDone: '{done} 个完成，{failed} 个失败',
+    emptyTarget: '请选择目标格式',
+    noFiles: '请先添加至少一个文件',
+    unsupportedFile: '无法识别「{name}」的格式，请检查扩展名。',
+    tooLarge: '「{name}」超过 200MB，请先拆分。',
+    duplicate: '「{name}」已经在列表里了。',
+    recent: {
+      label: '最近使用',
+      entry: '{format} · {time}',
+      clear: '清除记录',
+      note: '只记录格式与时间，不记录文件名或内容。',
+      justNow: '刚刚',
+      minutesAgo: '{n} 分钟前',
+      hoursAgo: '{n} 小时前',
+    },
+    aria: {
+      status: '转换状态',
+      fileProgress: '{name} 的转换进度',
+      listLabel: '待转换文件列表',
+    },
+    tips: {
+      title: '小提示',
+      items: [
+        '扫描版 PDF 转 EPUB 前建议先确认有没有文字层，没有的话开启 OCR。',
+        '漫画请用 CBZ / CBR 整卷打包，转换时会做成整页并支持从右到左。',
+        '老款 Kindle 选入门款预设（MOBI），新设备选 AZW3 效果更好。',
+      ],
+    },
+    loadError: '无法读取格式能力列表，已切换到内置矩阵。',
+  },
+
+  pair: {
+    badge: '格式对',
+    intro: '把 {from} 变成 {to}，为 Kindle 重新排版再交付。',
+    localChip: '本地完成 · 0 上传',
+    serverChip: '服务器转换 · 完成即删',
+    qualityHigh: '高保真',
+    qualityMedium: '重排后交付',
+    qualityLossy: '有损转换',
+    whatYouGet: '你会得到什么',
+    capabilityTitle: '这次转换会发生什么',
+    capabilityRows: {
+      engine: '转换引擎',
+      where: '处理位置',
+      quality: '质量预期',
+    },
+    localWhere: '浏览器本地（Web Worker）',
+    serverWhere: '本机服务端（临时目录）',
+    stepsTitle: '三步完成',
+    steps: [
+      { title: '选择文件', body: '把 {from} 文件拖进上传区，或点击选择。可以一次选多个。' },
+      { title: '确认选项', body: '按设备选预设，按阅读习惯调排版。预览会即时反映字号、行距和缩进。' },
+      { title: '下载 {to}', body: '转换完成后直接下载；批量时一键打包 ZIP，再拷到 Kindle 的 documents 目录。' },
+    ],
+    faqTitle: '关于 {from} 转 {to}',
+    faq: [
+      {
+        q: '转换会丢失排版吗？',
+        a: '取决于源文件。{from} 的文字、标题层级与图片会保留；复杂分栏、浮动定位和特殊字体会被重排成适合 Kindle 的流式排版。转换前界面会说明质量预期，转换后有任何警告都会列出来。',
+      },
+      {
+        q: '文件安全吗？',
+        a: '本地路径（TXT / MD / HTML → EPUB）不会上传任何字节；服务器路径会在系统临时目录处理，任务完成或 10 分钟后删除，不落数据库、不写文件名日志。',
+      },
+      {
+        q: '转换后的 {to} 怎么放进 Kindle？',
+        a: '用 USB 连接 Kindle，把文件拷进 documents 目录；或者用「发送至 Kindle」邮箱（需先在亚马逊账户里允许该发件地址）。AZW3 / EPUB 在现代 Kindle 上可以直接打开，MOBI 用于老设备。',
+      },
+      {
+        q: '可以一次转多个文件吗？',
+        a: '可以。多选文件后逐个转换，全部完成后一键打包 ZIP。单个文件失败不影响其他文件。',
+      },
+    ],
+    related: '相关的转换',
+    openWorkspace: '打开完整工作台',
+    uploadTitle: '上传 {from} 文件，转成 {to}',
+  },
+
+  greenPage: {
+    hero: {
+      eyebrow: '绿色与隐私',
+      title: '不传，就是最干净的省电。',
+      sub: 'KindleForge 的绿色主张只有三条：能让文件不离开本机的，就不上传；必须上传的，处理完立刻删除；整个服务可以搬到你自己家里。',
+    },
+    zeroTitle: '零留存是怎么实现的',
+    zeroIntro: '不是「我们承诺不看」，而是结构上不保留：',
+    zeroItems: [
+      { title: '临时目录', body: '每个任务一个目录：os.tmpdir()/kindleforge/<jobId>，权限 0600，进程退出时清理。' },
+      { title: '完成即删', body: '任务完成后你可以立即下载；记录和文件在 10 分钟后到期删除，DELETE /api/jobs/:id 可以提前删。' },
+      { title: '无数据库', body: '任务状态只存在进程内存里；没有账号、没有历史、没有「关联分析」的原料。' },
+      { title: '日志脱敏', body: '日志里只出现任务 id 和错误码，不写文件名，不写文件内容。' },
+    ],
+    verifyTitle: '你可以自己验证',
+    verify: [
+      '打开开发者工具，看 Network：页面没有分析、广告或第三方请求。',
+      '本地模式转换时，Network 面板里没有 /api/convert。',
+      '断网后 TXT / MD / HTML → EPUB 仍然可用。',
+      '部署后查看系统临时目录：任务结束后目录会被清掉。',
+    ],
+    compareTitle: '和云端转换比，差在哪',
+    compareNote: '我们不编造能耗数字。下面只列结构性的差别。',
+    compareColumns: { label: '维度', cloud: '云端转换', local: 'KindleForge' },
+    compareRows: [
+      { label: '文件位置', cloud: '必须上传到对方服务器', local: '纯文本路径不上传；其余按需上传本机服务端' },
+      { label: '保留时间', cloud: '按对方政策（常见 1 小时）', local: '任务完成或 10 分钟后删除，可随时手动删除' },
+      { label: '追踪', cloud: '通常含分析脚本与广告', local: '零分析、零广告、零第三方请求' },
+      { label: '可审计性', cloud: '闭源，无法验证', local: '开源，可自托管，可逐行审计' },
+      { label: '能耗', cloud: '文件上传 + 对方常开服务器', local: '本地模式只用你已有设备的 CPU' },
+    ],
+    selfHostTitle: '搬到自己的机器上',
+    selfHostBody:
+      '项目是一个无状态 Next.js 应用。没有数据库、没有对象存储、没有账号系统；进程退出，临时目录随之清理。你可以把它放在 NAS、树莓派或一台闲置的 mini 主机上。',
+    commands: ['npm install', 'npx next build', 'npx next start -p 3100'],
+    selfHostNote: 'Calibre 可选。安装后可用 MOBI / AZW3 / PDF 输出；不装也能用内置的 EPUB / TXT / HTML 路径。',
+    energyTitle: '我们能诚实说出口的',
+    energyBody:
+      '一次本地转换确实会消耗你电脑的 CPU 和一点电。它省掉的是：把文件上传到远端的带宽、远端服务器的处理与散热、以及一台为了随时待命而常开的机器。这些差别是结构性的，但我们不会把它换算成「每次节省 X 克碳」——那需要知道你所在地的电网结构，我们不知道。',
+    noTrackTitle: '为什么没有分析脚本',
+    noTrackBody:
+      '我们不需要知道你是谁、从哪来、转了什么。没有账号体系，也就没有「用户画像」可卖。页面上唯一的请求来自本站，字体使用系统字体，图标是内联 SVG。',
+    cta: '回到转换器',
+  },
+
+  docsPage: {
+    hero: {
+      eyebrow: '开发者',
+      title: 'API 文档',
+      sub: '一个 multipart POST 开始，轮询，下载。没有 SDK、没有密钥、没有注册。所有响应 Cache-Control: no-store。',
+    },
+    toc: {
+      quickstart: '快速开始',
+      endpoints: '接口',
+      errors: '错误码',
+      limits: '限制',
+      selfHost: '自托管',
+      calibre: 'Calibre',
+    },
+    quickstartTitle: '60 秒跑通',
+    quickstartBody: '提交任务后拿到 jobId，每 800ms 轮询一次；状态变成 done 后就能下载。',
+    endpointTitle: '接口',
+    errorsTitle: '错误码与人话',
+    errorsIntro: '所有错误响应格式统一：{ error: { code, message, hint } }。hint 是给用户看的下一步建议。',
+    errorColumns: { code: '错误码', meaning: '含义', fix: '怎么办' },
+    limitsTitle: '限制',
+    limits: [
+      '单文件 ≤ 200MB；解压后资源总量 ≤ 1GB。',
+      '防 zip bomb：条目数 > 5000 或解压比 > 200 直接拒绝。',
+      '任务结果保留 10 分钟，之后自动删除；可手动 DELETE。',
+      '不处理 DRM 加密文件，检测到即拒绝。',
+      '不提供账号、历史记录或云端存储。',
+    ],
+    selfHostTitle: '自托管',
+    selfHostBody: '默认端口 3100。没有数据库，没有外部服务依赖；Calibre 是可选的转换增强。',
+    calibreTitle: '安装 Calibre（可选）',
+    calibreBody:
+      '内置引擎覆盖 EPUB / TXT / HTML / DOCX / FB2 / CBZ / CBR / 图片。MOBI、AZW3、PDF、ODT、RTF 等路径依赖 Calibre 的 ebook-convert；没装时会返回 ENGINE_MISSING 并说明缺什么。',
+    calibreCommands: ['brew install --cask calibre', 'sudo apt install calibre'],
+    apiNote: '接口基址就是当前站点，例如 /api/convert。生产环境请在前面加 HTTPS 反向代理。',
+    statusTitle: '任务状态字段',
+    statusRows: [
+      { field: 'status', meaning: 'queued / running / done / error' },
+      { field: 'progress', meaning: '0–100 的整数' },
+      { field: 'engine', meaning: 'builtin / calibre / pandoc' },
+      { field: 'warnings', meaning: '转换中的提示，例如丢版式、字体替换' },
+      { field: 'result', meaning: 'filename / size / mime / downloadUrl' },
+      { field: 'error', meaning: 'code / message / hint' },
+    ],
+  },
+
+  notFound: {
+    title: '这一页没有铸出来。',
+    body: '链接可能旧了，或者这个格式对并不存在。下面两条路都能走通。',
+    home: '回到首页',
+    converter: '打开转换工作台',
+  },
+
+  errors: {
+    UNSUPPORTED_PAIR: {
+      message: '这个格式组合暂不支持',
+      hint: '换一个目标格式试试；格式矩阵里列出了所有可用组合。',
+    },
+    ENGINE_MISSING: {
+      message: '本机缺少完成这次转换的引擎',
+      hint: '安装 Calibre 后重试（brew install --cask calibre），或换成 EPUB / TXT 等内置路径。',
+    },
+    DRM: {
+      message: '这是带 DRM 加密的文件，我们不破解',
+      hint: '请从合法渠道导出无 DRM 版本，或直接在官方 App / 设备上阅读。',
+    },
+    TOO_LARGE: {
+      message: '文件超过 200MB 限制',
+      hint: '先拆分文件；漫画可以按卷打包成多个 CBZ。',
+    },
+    TIMEOUT: {
+      message: '转换超时',
+      hint: '文件可能过大或引擎卡住。重试一次；扫描版 PDF 建议先拆分。',
+    },
+    INVALID_FILE: {
+      message: '文件无法识别或已损坏',
+      hint: '确认扩展名与内容一致，重新导出一次再试。',
+    },
+    INTERNAL: {
+      message: '转换时发生了内部错误',
+      hint: '重试一次；如果仍然失败，换一个目标格式并把错误码反馈给我们。',
+    },
+    INVALID_OPTIONS: {
+      message: '转换选项没有被接受',
+      hint: '把 OCR 语言设为自动，或检查排版参数后重试。',
+    },
+    RATE_LIMITED: {
+      message: '请求有点频繁',
+      hint: '等一分钟再试；批量转换时减少同时进行的文件数。',
+    },
+    NOT_FOUND: {
+      message: '任务不存在或已过期',
+      hint: '结果在完成后保留 10 分钟，请重新转换。',
+    },
+    ZIP_BOMB: {
+      message: '压缩包结构异常，已拒绝处理',
+      hint: '解压后的条目太多或压缩比异常，请重新打包成正常的 CBZ / CBR。',
+    },
+    UNSUPPORTED_FORMAT: {
+      message: '不支持这种输入格式',
+      hint: '检查文件扩展名；格式矩阵页列出了所有支持的输入。',
+    },
+    INSUFFICIENT_STORAGE: {
+      message: '临时空间不足',
+      hint: '清理磁盘空间，或减少同时转换的文件后重试。',
+    },
+    NETWORK: {
+      message: '无法连接转换服务',
+      hint: '检查网络后重试；TXT / MD / HTML 可以走本地模式，不需要服务器。',
+    },
+    WORKER: {
+      message: '本地转换失败',
+      hint: '已自动切换到服务器重试；如果仍然失败，换一个目标格式。',
+    },
+  },
+};
+
+export default zh;

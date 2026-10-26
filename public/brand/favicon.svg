@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="kf-favicon-title">
+  <title id="kf-favicon-title">KindleForge</title>
+  <rect width="64" height="64" rx="14" fill="#070b09" />
+  <rect x="0.75" y="0.75" width="62.5" height="62.5" rx="13.25" fill="none" stroke="#f4f0e6" stroke-opacity="0.14" stroke-width="1.5" />
+  <g color="#f4f0e6">
+    <g transform="translate(8 8) scale(1.5)" fill="none" stroke="currentColor" stroke-width="3.1" stroke-linecap="round">
+      <path d="M9.2 5.2v21.6" />
+      <path d="M9.2 16.1c4.4-1 9.9-4.6 13.6-10.1" />
+      <path d="M9.2 16.1c4.8 1.2 10.3 5.2 14.6 10.4" />
+    </g>
+    <path
+      d="M47.9 10.4l1.5 3.75 3.75 1.5-3.75 1.5-1.5 3.75-1.5-3.75-3.75-1.5 3.75-1.5z"
+      fill="#a8f06a"
+    />
+  </g>
+</svg>

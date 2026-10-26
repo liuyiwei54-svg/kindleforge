@@ -1,0 +1,40 @@
+# syntax=docker/dockerfile:1.7
+# KindleForge — full image. Adds the real engines that make MOBI / AZW3 / PDF /
+# OCR conversions possible: Calibre (ebook-convert), Pandoc, Tesseract (zh+en),
+# Poppler. ~1.2 GB image; the slim Dockerfile covers the green/local path.
+
+FROM node:24-bookworm AS deps
+WORKDIR /app
+RUN corepack enable
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile --prod=false
+
+FROM node:24-bookworm AS build
+WORKDIR /app
+ENV NEXT_TELEMETRY_DISABLED=1 \
+    KF_STANDALONE=1
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN pnpm exec next build
+
+FROM node:24-bookworm-slim AS runner
+WORKDIR /app
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    PORT=3100 \
+    HOSTNAME=0.0.0.0 \
+    DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      calibre pandoc tesseract-ocr tesseract-ocr-chi-sim tesseract-ocr-eng \
+      poppler-utils fonts-noto-cjk fontconfig \
+    && rm -rf /var/lib/apt/lists/*
+RUN useradd -m -u 10001 kindle
+COPY --from=build /app/.next/standalone ./
+COPY --from=build /app/.next/static ./.next/static
+COPY --from=build /app/public ./public
+RUN mkdir -p /tmp/kindleforge && chown -R kindle:kindle /tmp/kindleforge /app
+USER kindle
+EXPOSE 3100
+HEALTHCHECK --interval=30s --timeout=8s --retries=3 \
+  CMD wget -qO- http://127.0.0.1:3100/api/health || exit 1
+CMD ["node", "server.js"]

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 228 64" role="img" aria-labelledby="kf-logo-light-title">
+  <title id="kf-logo-light-title">KindleForge</title>
+  <g color="#18211d">
+    <g transform="translate(6 10.5) scale(1.34)" fill="none" stroke="currentColor" stroke-width="3.1" stroke-linecap="round">
+      <path d="M9.2 5.2v21.6" />
+      <path d="M9.2 16.1c4.4-1 9.9-4.6 13.6-10.1" />
+      <path d="M9.2 16.1c4.8 1.2 10.3 5.2 14.6 10.4" />
+    </g>
+    <path
+      d="M41.64 12.64l1.34 3.35 3.35 1.34-3.35 1.34-1.34 3.35-1.34-3.35-3.35-1.34 3.35-1.34z"
+      fill="#3f7a1f"
+    />
+  </g>
+  <text
+    x="56"
+    y="42.5"
+    font-family="'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', Georgia, 'Times New Roman', serif"
+    font-size="29"
+    font-weight="600"
+    letter-spacing="-0.4"
+  >
+    <tspan fill="#18211d">Kindle</tspan><tspan fill="#3f7a1f">Forge</tspan>
+  </text>
+</svg>

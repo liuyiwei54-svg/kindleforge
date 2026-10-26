@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-labelledby="kf-mark-title">
+  <title id="kf-mark-title">KindleForge mark</title>
+  <!-- A book spine folded into a K; the spark is the forge. -->
+  <g fill="none" stroke="currentColor" stroke-width="3.1" stroke-linecap="round">
+    <path d="M9.2 5.2v21.6" />
+    <path d="M9.2 16.1c4.4-1 9.9-4.6 13.6-10.1" />
+    <path d="M9.2 16.1c4.8 1.2 10.3 5.2 14.6 10.4" />
+  </g>
+  <path
+    d="M26.6 1.6l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z"
+    fill="#a8f06a"
+  />
+</svg>

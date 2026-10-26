@@ -1,0 +1,671 @@
+import type { Dict } from './types';
+
+const en: Dict = {
+  brand: {
+    name: 'KindleForge',
+    tagline: 'Turn any file into a great book on your Kindle.',
+  },
+
+  meta: {
+    home: {
+      title: 'KindleForge — turn any file into the best book on your Kindle',
+      description:
+        'A free, open-source ebook converter for Kindle: EPUB / MOBI / AZW3 / PDF / DOCX / TXT / CBZ, with Kindle-first typography. TXT / MD / HTML → EPUB runs in your browser — the file is never uploaded.',
+    },
+    convert: {
+      title: 'Converter — EPUB / MOBI / AZW3 / PDF',
+      description:
+        'Batch-convert files into Kindle-friendly formats. Drop files, pick a device preset and typography; TXT / MD / HTML → EPUB stays local, everything else runs on the server and is deleted on completion.',
+    },
+    green: {
+      title: 'Green & private — zero retention, no tracking, self-hostable',
+      description:
+        'How KindleForge keeps files off the network, deletes them on completion, and can be self-hosted with one command. We only make energy claims we can verify.',
+    },
+    docs: {
+      title: 'API docs — open, no keys, no signup',
+      description:
+        'The KindleForge conversion API: multipart POST to queue a job, poll the status, download the result. Includes error codes, limits, self-hosting and Calibre setup.',
+    },
+    pairTitle: '{from} to {to} — free, local-first Kindle conversion',
+    pairDescription:
+      'Convert {from} to {to} in your browser. {quality} Your file is never used for anything else: local paths never upload, server paths delete on completion.',
+    ogAlt: 'KindleForge — turn any file into a great book on your Kindle',
+  },
+
+  code: {
+    copy: 'Copy',
+    copied: 'Copied',
+  },
+
+  nav: {
+    converter: 'Converter',
+    formats: 'Formats',
+    green: 'Why green',
+    docs: 'API docs',
+    github: 'GitHub',
+    githubLabel: 'KindleForge on GitHub (open-sourcing soon)',
+    menu: 'Menu',
+    closeMenu: 'Close menu',
+    skip: 'Skip to content',
+    langSwitch: '中文',
+    langSwitchLabel: 'Switch to Chinese',
+    brandHome: 'KindleForge home',
+  },
+
+  hero: {
+    eyebrow: 'Local-first · no ads · open source',
+    titleLead: 'Any file,',
+    titleAccent: 'a great book on your Kindle.',
+    sub: 'EPUB, MOBI, AZW3, PDF, DOCX, TXT, comics — 15 input formats and 7 outputs, re-typeset for Kindle before delivery. TXT / Markdown / HTML → EPUB happens entirely in your browser: not a single byte is uploaded.',
+    ctaPrimary: 'Choose a file',
+    ctaSecondary: 'Open the full converter',
+    upload: {
+      title: 'Drop your file here',
+      subtitle: 'or click to browse · multiple files welcome',
+      browse: 'Choose file',
+      active: 'Release to add',
+      accept: 'EPUB · MOBI · AZW/AZW3 · PDF · DOCX · ODT · TXT · MD · HTML · RTF · FB2 · CBZ/CBR · images',
+      localBadge: 'TXT / MD / HTML can convert locally',
+      privacy: 'No upload · no signup · no tracking',
+      opensHint: 'The workspace opens right here once you pick files.',
+    },
+  },
+
+  trust: {
+    title: 'Why switch',
+    items: {
+      local: {
+        value: '0 bytes',
+        label: 'uploaded in local mode',
+        note: 'TXT / MD / HTML → EPUB runs inside a Web Worker',
+      },
+      inputs: {
+        value: '{inputs}',
+        label: 'input formats',
+        note: 'ebooks, documents, plain text, comics, images',
+      },
+      ads: {
+        value: '0',
+        label: 'ads and tracking scripts',
+        note: 'no analytics, no third-party requests, no cookie wall',
+      },
+      open: {
+        value: '100%',
+        label: 'self-hostable',
+        note: 'no database, no accounts, one command to run',
+      },
+    },
+  },
+
+  compare: {
+    eyebrow: 'Why switch',
+    title: 'Three dimensions, point by point',
+    sub: 'This is not about proving someone else is bad. It is about three things a cloud converter structurally cannot do: keep the file on your machine, treat Chinese typography as a first-class problem, and let anyone audit and self-host the whole stack.',
+    columns: {
+      dimension: 'Dimension',
+      us: 'KindleForge',
+      them: 'Cloud converters (e.g. RunConvert)',
+    },
+    rows: [
+      {
+        key: 'quality',
+        dim: 'Quality',
+        us: [
+          'Kindle device presets: Paperwhite / Oasis / Scribe / basic — the output format follows the device',
+          'Chinese typography done properly: 2em first-line indent, justified text, mixed CJK/Latin spacing, no orphaned punctuation',
+          'Chapter count, word count, image count and estimated reading time before you convert',
+          'Failures explain which step broke, why, and what to change — instead of handing you a broken file',
+        ],
+        them: 'A general-purpose pipeline aimed at “it converts”: typography follows the source file, and its public page shows no Kindle device presets or Chinese typography controls.',
+      },
+      {
+        key: 'coverage',
+        dim: 'Coverage',
+        us: [
+          '15 inputs / 7 outputs, a public capability matrix, and a page for every pair',
+          'Batch conversion with a single ZIP download',
+          'Full-page comics with right-to-left page flow',
+          'An open HTTP API and self-hosting — no keys, no signup',
+        ],
+        them: '18 ebook formats, 1GB per file, cloud queue (per its public page). Primarily a website; no self-hosting.',
+      },
+      {
+        key: 'green',
+        dim: 'Green / privacy',
+        us: [
+          'TXT / MD / HTML → EPUB happens in the browser, 0 bytes uploaded, works offline',
+          'Zero server retention: system temp dir, delete on completion, no database',
+          'No ads, no analytics, no third-party requests',
+          'The whole stack is open source — deploy it yourself and audit it',
+        ],
+        them: 'Files must be uploaded to the cloud; it promises deletion after 1 hour (per its public page); the site carries ads; no self-hosting.',
+      },
+    ],
+    footNote:
+      'Comparison based on RunConvert’s public page (checked 2026-10) and our current implementation. Format counts and the capability matrix come straight from lib/engine/formats.ts in this repository — check them yourself.',
+    honest:
+      "Here's where we lose: they accept more input extensions (18 formats vs our 15 classes) and allow larger single files (1 GB vs 200 MB). If those two matter most to you, they may be the better fit. We're betting on something else: the same book reads better on a Kindle.",
+
+  },
+
+  device: {
+    eyebrow: 'What it looks like on Kindle',
+    title: 'Tune it until it reads well, then convert',
+    sub: 'This is not a screenshot — it is a Kindle screen drawn with CSS. Drag the controls and the preview updates live; those exact values get written into the EPUB stylesheet.',
+    live: 'Live preview',
+    controls: {
+      fontSize: 'Font size',
+      lineHeight: 'Line height',
+      indent: 'First-line indent',
+      justify: 'Justify',
+      fontFamily: 'Typeface',
+      serif: 'Serif',
+      sans: 'Sans',
+      off: 'Off',
+      on: 'On',
+    },
+    sample: {
+      book: 'West with the Night',
+      author: 'Sample chapter',
+      chapter: 'Chapter one',
+      title: 'The sea went quiet after midnight',
+      paragraphs: [
+        'The sea went quiet after midnight, like a sheet of paper smoothed flat by hand. One lamp was left on deck; its light fell on the corner of the table and lit the edges of the page.',
+        'He turned to the folded corner and read aloud. Wind came through the porthole, scattered his voice, and the waves caught it. For years that was how he finished books: in a moving place, reading about a place that stayed still.',
+        '“Chapter 3 · Tide tables,” he wrote in the margin, then closed the book and waited for daylight.',
+      ],
+    },
+    footnote: 'The screen is a simulation; real devices apply their own font size and margin settings on top of the KF8 layout.',
+  },
+
+  matrix: {
+    eyebrow: 'Format matrix',
+    title: '15 inputs, 7 outputs, every pair documented',
+    sub: 'Every conversion has its own page. Pairs marked “local” run in your browser; pairs marked “upload” go to the server and are deleted when the job finishes.',
+    searchLabel: 'Search formats',
+    searchPlaceholder: 'Try epub, comics, pdf…',
+    kindsLabel: 'Filter by kind',
+    kinds: {
+      all: 'All',
+      ebook: 'Ebooks',
+      document: 'Documents',
+      text: 'Plain text',
+      comic: 'Comics',
+      image: 'Images',
+    },
+    inputLabel: 'Input',
+    outputsLabel: 'Output',
+    local: 'Local',
+    server: 'Upload',
+    popular: 'Popular conversions',
+    noResult: 'No matching format. Try “epub” or “pdf”, or just open the converter.',
+    openWorkspace: 'Open converter',
+    clickHint: 'Click a chip to open that format pair’s page',
+  },
+
+  localMode: {
+    eyebrow: 'Local mode',
+    title: 'Some files never need to leave this computer',
+    sub: 'TXT, Markdown and HTML become EPUB inside a Web Worker: read, parse, build the EPUB and download — all in local memory. The server never sees the file.',
+    steps: [
+      { title: 'Drop the file', body: 'The upload area reads the extension and decides whether this pair can run locally.' },
+      { title: 'Watch it run locally', body: 'The UI marks it “Local processing · not uploaded”, and the progress comes from the Worker’s real state.' },
+      { title: 'Download directly', body: 'The EPUB is built in the browser and saved from there. Pull the network cable — it still works.' },
+    ],
+    verifyTitle: 'How to verify',
+    verify: [
+      'Open DevTools → Network: no /api/convert request appears while converting locally.',
+      'Or simply go offline (turn off Wi-Fi) and convert again — local mode still produces a download.',
+      'The “Local processing · not uploaded” badge only appears after the Worker really finished.',
+    ],
+    tableTitle: 'What leaves your machine',
+    tableColumns: { pair: 'Conversion', where: 'Where', note: 'Notes' },
+    localWhere: 'Local · 0 uploaded',
+    serverWhere: 'Server · deleted on completion',
+    localNote: 'Plain-text path, completed in the browser',
+    serverNote: 'Parsed on the server · deleted on completion',
+    note: 'Server-path files are written to the system temp directory (mode 0600) and removed when the job completes or after 10 minutes; no database, no file-name logging.',
+    cta: 'Read how we handle privacy',
+  },
+
+  green: {
+    eyebrow: 'Green & private',
+    title: 'Not sending it is the cleanest kind of saving',
+    sub: 'Honestly: conversion takes electricity, and building an EPUB needs CPU. What we can do is run it on hardware you already own, instead of spinning up one more always-on server and uploading the file one more time.',
+    cards: [
+      {
+        title: 'Zero retention',
+        body: 'Results go to the system temp directory and expire after completion or download. No database, no object storage, no vague “we clean up after 7 days”.',
+      },
+      {
+        title: 'No tracking',
+        body: 'No analytics, no ads, no third-party fonts or CDNs. The only requests a page makes are to this site.',
+      },
+      {
+        title: 'Self-hostable',
+        body: 'Open source, stateless. Run it on your NAS or a Raspberry Pi and your files never touch “our server” at all.',
+      },
+    ],
+    selfHost: {
+      title: 'One command, your own machine',
+      body: 'No database, no object storage, no accounts. When the process exits, temp files go with it. Calibre is an optional upgrade: install it to unlock MOBI / AZW3 / PDF output.',
+      commands: ['npm install', 'npx next build', 'npx next start -p 3100'],
+      note: 'Requires Node.js 20+. For MOBI / AZW3, install Calibre (brew install --cask calibre on macOS).',
+    },
+    energy: {
+      title: 'How to talk about energy honestly',
+      body: 'We will not claim that each conversion saves X grams of CO₂ — that depends on your grid, your hardware and the file. What is verifiable: local mode removes a round trip to a server, and self-hosting removes one always-on machine. For the rest, ask your electricity meter.',
+    },
+    cta: 'Read the full story',
+  },
+
+  faq: {
+    eyebrow: 'FAQ',
+    title: 'The things worth saying out loud',
+    items: [
+      {
+        q: 'Will my file be uploaded?',
+        a: 'It depends on the format pair. TXT / Markdown / HTML → EPUB runs in the browser and never leaves your computer; it even works offline. Other pairs (EPUB → MOBI, PDF → EPUB, …) need the server: the file is uploaded to the service running on this host, deleted when the job completes or after 10 minutes, and never written to a database or a log. The UI always labels the path as “Local processing · not uploaded” or “Upload”.',
+      },
+      {
+        q: 'Do you support DRM-protected ebooks?',
+        a: 'No, and we will not crack them. DRM is a copyright mechanism; bypassing it breaks the terms of service and may break the law. Read Kindle Store purchases in the official app or on the device. If you need another format, export a DRM-free copy through a legitimate route (for example, a publisher-provided unencrypted file). When we detect DRM we refuse and say why instead of pretending to succeed.',
+      },
+      {
+        q: 'Why don’t you recommend MOBI?',
+        a: 'MOBI is a 2000s format without modern typography support (better fonts, embedded styles, complex navigation). AZW3 (KF8) is supported by every Kindle since 2012, and EPUB is the open standard. We keep MOBI output for old devices and workflows that demand it; for anything newer, pick AZW3 or EPUB.',
+      },
+      {
+        q: 'What if a conversion fails?',
+        a: 'The UI shows an error code, the cause, and a next step. Common cases: encrypted or corrupt source (re-export it), Calibre missing (install it and retry), file too large (split it), scanned PDF without a text layer (enable OCR or find a better source). A failure never leaves a half-broken file behind, and you are not charged anything.',
+      },
+      {
+        q: 'Can I convert many files at once?',
+        a: 'Yes. Select several files, each one converts with its own progress, and when they finish you can pack them into a single ZIP. One failure does not affect the others.',
+      },
+      {
+        q: 'Is there an API?',
+        a: 'Yes. POST /api/convert queues a job, GET /api/jobs/:id polls it, GET /api/jobs/:id/download fetches the result, DELETE /api/jobs/:id cancels. No keys, no signup, 200MB per file by default. The docs include curl examples and the full error table.',
+      },
+      {
+        q: 'Is it really greener?',
+        a: 'Only where we can verify it: local mode removes one upload and one server computation; self-hosting reuses hardware you already run; no ads or tracking means lighter pages. We do not quantify carbon, because that number depends on variables we do not know.',
+      },
+      {
+        q: 'Can I self-host it?',
+        a: 'Yes. It is a plain Next.js app with no database and no queue service. npm install, next build, next start — three steps. Calibre is optional. The README has the full self-hosting guide.',
+      },
+    ],
+  },
+
+  cta: {
+    title: 'Make your next book the best one on your Kindle',
+    sub: 'No signup, and no handing your files to a stranger.',
+    primary: 'Start converting',
+    secondary: 'Read the API docs',
+  },
+
+  footer: {
+    tagline: 'A local-first ebook converter. No tracking, no ads, no copies of your files.',
+    columns: {
+      product: 'Product',
+      resources: 'Resources',
+      privacy: 'Privacy',
+    },
+    links: {
+      converter: 'Converter',
+      formats: 'Format matrix',
+      pairPages: 'Format pair pages',
+      green: 'Green & privacy',
+      docs: 'API docs',
+      selfHost: 'Self-hosting',
+      noTracking: 'No-tracking policy',
+      language: '中文',
+      github: 'GitHub',
+    },
+    bottom: '© 2026 KindleForge · no self-hosted analytics · no ads · no data sales',
+    trademark: 'Kindle is a trademark of Amazon.com, Inc. This project is not affiliated with Amazon.',
+    built: 'Built with Next.js, running somewhere you can see.',
+  },
+
+  convert: {
+    title: 'Converter',
+    sub: 'Files leave your machine only when they must. TXT / MD / HTML → EPUB runs fully locally; everything else is converted on the server and deleted on completion.',
+    backHome: 'Back to home',
+    privacyBadge: 'No tracking · no accounts',
+    limits: 'Up to 200MB per file; results stay downloadable for 10 minutes after completion.',
+    collapse: 'Collapse',
+    openFull: 'Open the full converter',
+    matrixLive: 'Live capability matrix',
+    matrixBuiltin: 'Built-in capability matrix',
+    zipError: 'ZIP download failed — download the files individually.',
+    files: {
+      title: 'Files to convert',
+      count: '{n} files',
+      empty: 'No files yet. Drop them here or click to browse.',
+      addMore: 'Add more',
+      remove: 'Remove {name}',
+      clear: 'Clear list',
+      browse: 'Choose files',
+      dropTitle: 'Drop files to start',
+      dropSubtitle: 'Multiple files · TXT / MD / HTML can run locally',
+      dropActive: 'Release to add',
+      acceptNote: 'EPUB · MOBI · AZW/AZW3 · PDF · DOCX · ODT · TXT · MD · HTML · RTF · FB2 · CBZ/CBR · images',
+      size: 'Size',
+      estimate: 'Estimate',
+      estimateValue: '~{minutes} min read',
+      estimateUnknown: 'Pending',
+      targetLabel: 'Target format for {name}',
+      unsupported: 'This input cannot produce the selected output',
+    },
+    target: {
+      label: 'Output format',
+      hint: 'Only pairs supported by every loaded file',
+      noFiles: 'Add files first, then choose an output format',
+      noCommonTarget: 'These files share no output format — convert them in separate batches.',
+      localHint: 'This pair runs in your browser',
+      localOption: 'local',
+    },
+    device: {
+      label: 'Kindle preset',
+      hint: 'Picking a device sets the output format and typography',
+      current: 'Current preset: {device}',
+    },
+    options: {
+      title: 'Typography',
+      indent: 'First-line indent',
+      indentUnit: 'em',
+      lineHeight: 'Line height',
+      justify: 'Justify',
+      font: 'Body typeface',
+      fontSerif: 'Serif',
+      fontSans: 'Sans',
+      fontDefault: 'Keep source',
+      toc: 'Build table of contents',
+      cover: 'Keep cover',
+      manga: 'Right-to-left comics',
+      ocrTitle: 'Scanned-document OCR',
+      ocrToggle: 'Recognise text in scans',
+      ocrLanguage: 'OCR language',
+      ocrAuto: 'Auto (Simplified Chinese + English)',
+      ocrChiSim: 'Simplified Chinese',
+      ocrChiTra: 'Traditional Chinese',
+      ocrEnglish: 'English',
+      ocrJapanese: 'Japanese',
+      ocrKorean: 'Korean',
+      ocrNote: 'OCR runs on the server and needs Tesseract; local mode does not support it.',
+      ocrUnavailable: 'Available once a PDF or image is loaded.',
+      ocrHint: 'PDF detected: a scan without a text layer only becomes page images unless OCR is on.',
+      ocrEnable: 'Enable OCR',
+      note: 'These values are written into the EPUB stylesheet; target formats that cannot express them ignore them.',
+    },
+    start: 'Start converting',
+    starting: 'Converting…',
+    cancel: 'Cancel',
+    cancelAll: 'Cancel all',
+    download: 'Download',
+    retry: 'Retry',
+    again: 'Convert another',
+    zip: 'Download ZIP ({n})',
+    zipEmpty: 'Download ZIP',
+    status: {
+      idle: 'Waiting',
+      preparing: 'Preparing',
+      uploading: 'Uploading',
+      running: 'Converting',
+      local: 'Local processing · not uploaded',
+      done: 'Done',
+      error: 'Failed',
+      canceled: 'Canceled',
+    },
+    engine: 'Engine',
+    warnings: 'Notes',
+    errorTitle: 'Conversion failed',
+    errorHint: 'What to try',
+    fallback: 'Local conversion did not finish, so the file was uploaded to the server on this host instead; it is deleted when the job ends.',
+    fallbackBadge: 'Fell back to server',
+    localBadge: 'Local · not uploaded',
+    serverBadge: 'Uploaded · deleted on completion',
+    allDone: 'All done',
+    partialDone: '{done} done, {failed} failed',
+    emptyTarget: 'Choose a target format',
+    noFiles: 'Add at least one file first',
+    unsupportedFile: 'Could not detect the format of “{name}”. Check the extension.',
+    tooLarge: '“{name}” is over 200MB — split it first.',
+    duplicate: '“{name}” is already in the list.',
+    recent: {
+      label: 'Recent',
+      entry: '{format} · {time}',
+      clear: 'Clear history',
+      note: 'Only the format and time are stored — never file names or contents.',
+      justNow: 'just now',
+      minutesAgo: '{n} min ago',
+      hoursAgo: '{n} h ago',
+    },
+    aria: {
+      status: 'Conversion status',
+      fileProgress: 'Conversion progress for {name}',
+      listLabel: 'Files to convert',
+    },
+    tips: {
+      title: 'Good to know',
+      items: [
+        'For scanned PDFs, check whether a text layer exists first; if not, enable OCR.',
+        'Bundle comics as CBZ / CBR per volume — they become full-page books with right-to-left flow.',
+        'Old Kindles: pick the basic preset (MOBI). Newer devices look better with AZW3.',
+      ],
+    },
+    loadError: 'Could not load the live capability list; using the built-in matrix.',
+  },
+
+  pair: {
+    badge: 'Format pair',
+    intro: 'Turn a {from} file into {to}, re-typeset for Kindle before delivery.',
+    localChip: 'Runs locally · 0 uploaded',
+    serverChip: 'Server conversion · deleted on completion',
+    qualityHigh: 'High fidelity',
+    qualityMedium: 'Reflowed output',
+    qualityLossy: 'Lossy conversion',
+    whatYouGet: 'What you get',
+    capabilityTitle: 'What happens in this conversion',
+    capabilityRows: {
+      engine: 'Engine',
+      where: 'Where it runs',
+      quality: 'Quality',
+    },
+    localWhere: 'In your browser (Web Worker)',
+    serverWhere: 'On this host (temp directory)',
+    stepsTitle: 'Three steps',
+    steps: [
+      { title: 'Choose a file', body: 'Drop your {from} file into the upload area, or click to browse. Multiple files are fine.' },
+      { title: 'Confirm options', body: 'Pick a device preset and tune typography to taste. The preview reflects font size, line height and indent instantly.' },
+      { title: 'Download {to}', body: 'Download when it finishes; for batches, grab a single ZIP and copy it into your Kindle’s documents folder.' },
+    ],
+    faqTitle: 'About converting {from} to {to}',
+    faq: [
+      {
+        q: 'Will the conversion lose formatting?',
+        a: 'It depends on the source. Text, heading levels and images from {from} are preserved; complex columns, floats and exotic fonts are reflowed into Kindle-friendly layout. The UI states the expected quality before you start and lists every warning afterwards.',
+      },
+      {
+        q: 'Is my file safe?',
+        a: 'The local path (TXT / MD / HTML → EPUB) uploads zero bytes. The server path processes the file in the system temp directory, deletes it on completion or after 10 minutes, and never writes a database row or a file-name log.',
+      },
+      {
+        q: 'How do I get the {to} file onto my Kindle?',
+        a: 'Connect the Kindle over USB and copy the file into the documents folder, or use the Send to Kindle email address (after allowing your sender in your Amazon account). AZW3 and EPUB open directly on modern Kindles; MOBI is for older devices.',
+      },
+      {
+        q: 'Can I convert several files at once?',
+        a: 'Yes. Select multiple files, each converts with its own progress, and the results can be packed into one ZIP. A single failure does not affect the rest.',
+      },
+    ],
+    related: 'Related conversions',
+    openWorkspace: 'Open the full converter',
+    uploadTitle: 'Upload a {from} file, get {to}',
+  },
+
+  greenPage: {
+    hero: {
+      eyebrow: 'Green & private',
+      title: 'Not sending it is the cleanest kind of saving.',
+      sub: 'KindleForge’s green claim has exactly three parts: if a file can stay on your machine, it does; if it must be uploaded, it is deleted as soon as the job ends; and the whole service can move into your own house.',
+    },
+    zeroTitle: 'How zero retention actually works',
+    zeroIntro: 'Not “we promise not to look”, but structurally nothing is kept:',
+    zeroItems: [
+      { title: 'Temp directory', body: 'One directory per job: os.tmpdir()/kindleforge/<jobId>, mode 0600, cleaned up when the process exits.' },
+      { title: 'Deleted on completion', body: 'Download immediately after the job finishes; files and records expire after 10 minutes, and DELETE /api/jobs/:id removes them sooner.' },
+      { title: 'No database', body: 'Job state lives in process memory only. No accounts, no history, no raw material for “audience insights”.' },
+      { title: 'Redacted logs', body: 'Logs contain job ids and error codes — never file names or file contents.' },
+    ],
+    verifyTitle: 'Verify it yourself',
+    verify: [
+      'Open DevTools → Network: pages make no analytics, ad or third-party requests.',
+      'While converting locally, the Network panel shows no /api/convert request.',
+      'Go offline and TXT / MD / HTML → EPUB still works.',
+      'After deploying, watch the system temp directory: job folders disappear when they expire.',
+    ],
+    compareTitle: 'How this differs from cloud conversion',
+    compareNote: 'We do not invent energy numbers. Below are only structural differences.',
+    compareColumns: { label: 'Dimension', cloud: 'Cloud conversion', local: 'KindleForge' },
+    compareRows: [
+      { label: 'Where files live', cloud: 'Must be uploaded to their servers', local: 'Plain-text paths never upload; others go to this host only' },
+      { label: 'Retention', cloud: 'Per their policy (often 1 hour)', local: 'Deleted on completion or after 10 minutes; delete manually any time' },
+      { label: 'Tracking', cloud: 'Usually analytics scripts and ads', local: 'Zero analytics, zero ads, zero third-party requests' },
+      { label: 'Auditability', cloud: 'Closed source, unverifiable', local: 'Open source, self-hostable, auditable line by line' },
+      { label: 'Energy', cloud: 'Upload plus an always-on server', local: 'Local mode uses CPU you already own' },
+    ],
+    selfHostTitle: 'Move it into your own machine',
+    selfHostBody:
+      'A stateless Next.js app: no database, no object storage, no accounts. When the process exits, the temp directory goes with it. It runs fine on a NAS, a Raspberry Pi, or a spare mini PC.',
+    commands: ['npm install', 'npx next build', 'npx next start -p 3100'],
+    selfHostNote: 'Calibre is optional. Install it for MOBI / AZW3 / PDF output; without it the built-in EPUB / TXT / HTML paths still work.',
+    energyTitle: 'What we can honestly say',
+    energyBody:
+      'A local conversion does use your CPU and a little electricity. What it removes: the bandwidth of uploading the file, the remote server’s computation and cooling, and a machine kept always-on just in case. Those differences are structural, but we will not translate them into “X grams of carbon per file” — that requires knowing your local grid, and we don’t.',
+    noTrackTitle: 'Why there is no analytics script',
+    noTrackBody:
+      'We do not need to know who you are, where you came from, or what you converted. There are no accounts, so there is no profile to sell. The only requests come from this site, fonts are system fonts, and icons are inline SVG.',
+    cta: 'Back to the converter',
+  },
+
+  docsPage: {
+    hero: {
+      eyebrow: 'Developers',
+      title: 'API documentation',
+      sub: 'One multipart POST to queue, poll, download. No SDK, no keys, no signup. Every response is Cache-Control: no-store.',
+    },
+    toc: {
+      quickstart: 'Quick start',
+      endpoints: 'Endpoints',
+      errors: 'Error codes',
+      limits: 'Limits',
+      selfHost: 'Self-hosting',
+      calibre: 'Calibre',
+    },
+    quickstartTitle: 'Working in 60 seconds',
+    quickstartBody: 'Submit a job, receive a jobId, poll every 800ms, download when status is done.',
+    endpointTitle: 'Endpoints',
+    errorsTitle: 'Error codes in plain language',
+    errorsIntro: 'Every error uses the same shape: { error: { code, message, hint } }. The hint is the next step we would give a user.',
+    errorColumns: { code: 'Code', meaning: 'Meaning', fix: 'What to do' },
+    limitsTitle: 'Limits',
+    limits: [
+      'Up to 200MB per file; total extracted resources ≤ 1GB.',
+      'Zip-bomb protection: more than 5000 entries or a compression ratio above 200 is rejected.',
+      'Results are kept for 10 minutes, then deleted automatically; DELETE removes them sooner.',
+      'DRM-protected files are rejected, never cracked.',
+      'No accounts, no history, no cloud storage.',
+    ],
+    selfHostTitle: 'Self-hosting',
+    selfHostBody: 'Listens on port 3100 by default. No database, no external services; Calibre is an optional conversion upgrade.',
+    calibreTitle: 'Install Calibre (optional)',
+    calibreBody:
+      'The built-in engine covers EPUB / TXT / HTML / DOCX / FB2 / CBZ / CBR / images. MOBI, AZW3, PDF, ODT and RTF go through Calibre’s ebook-convert; without it the API returns ENGINE_MISSING and says what is missing.',
+    calibreCommands: ['brew install --cask calibre', 'sudo apt install calibre'],
+    apiNote: 'The API base is this site, e.g. /api/convert. In production put an HTTPS reverse proxy in front of it.',
+    statusTitle: 'Job status fields',
+    statusRows: [
+      { field: 'status', meaning: 'queued / running / done / error' },
+      { field: 'progress', meaning: 'integer 0–100' },
+      { field: 'engine', meaning: 'builtin / calibre / pandoc' },
+      { field: 'warnings', meaning: 'conversion notes, e.g. lost layout or substituted fonts' },
+      { field: 'result', meaning: 'filename / size / mime / downloadUrl' },
+      { field: 'error', meaning: 'code / message / hint' },
+    ],
+  },
+
+  notFound: {
+    title: 'This page never made it to print.',
+    body: "The link may be stale, or that format pair doesn't exist. Both of these work.",
+    home: 'Back home',
+    converter: 'Open the workbench',
+  },
+
+  errors: {
+    UNSUPPORTED_PAIR: {
+      message: 'This format pair is not supported yet',
+      hint: 'Try another output format — the format matrix lists every available pair.',
+    },
+    ENGINE_MISSING: {
+      message: 'This machine is missing the engine needed for that conversion',
+      hint: 'Install Calibre and retry (brew install --cask calibre), or switch to a built-in path such as EPUB / TXT.',
+    },
+    DRM: {
+      message: 'This file is DRM-protected; we do not break DRM',
+      hint: 'Export a DRM-free copy through a legitimate route, or read it in the official app or device.',
+    },
+    TOO_LARGE: {
+      message: 'The file exceeds the 200MB limit',
+      hint: 'Split it first; for comics, pack each volume as its own CBZ.',
+    },
+    TIMEOUT: {
+      message: 'The conversion timed out',
+      hint: 'The file may be too big or the engine stuck. Retry once; split scanned PDFs first.',
+    },
+    INVALID_FILE: {
+      message: 'The file could not be detected or looks corrupt',
+      hint: 'Check that the extension matches the content, then re-export and try again.',
+    },
+    INTERNAL: {
+      message: 'Something went wrong during conversion',
+      hint: 'Retry once; if it keeps failing, choose a different output format and report the error code.',
+    },
+    INVALID_OPTIONS: {
+      message: 'The conversion options were rejected',
+      hint: 'Set the OCR language to auto, or check the typography options and retry.',
+    },
+    RATE_LIMITED: {
+      message: 'A few too many requests',
+      hint: 'Wait a minute and retry; convert fewer files at the same time.',
+    },
+    NOT_FOUND: {
+      message: 'That job does not exist or has expired',
+      hint: 'Results are kept for 10 minutes after completion — convert the file again.',
+    },
+    ZIP_BOMB: {
+      message: 'The archive looks unsafe and was rejected',
+      hint: 'Too many entries or an abnormal compression ratio; repack it as a normal CBZ / CBR.',
+    },
+    UNSUPPORTED_FORMAT: {
+      message: 'That input format is not supported',
+      hint: 'Check the file extension; the format matrix lists every supported input.',
+    },
+    INSUFFICIENT_STORAGE: {
+      message: 'Not enough temporary storage',
+      hint: 'Free some disk space, or convert fewer files at once and retry.',
+    },
+    NETWORK: {
+      message: 'Cannot reach the conversion service',
+      hint: 'Check your connection and retry; TXT / MD / HTML can run locally without a server.',
+    },
+    WORKER: {
+      message: 'Local conversion failed',
+      hint: 'We switched to the server automatically; if that also fails, try another output format.',
+    },
+  },
+};
+
+export default en;

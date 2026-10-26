@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" width="360" height="220" role="img" aria-labelledby="kf-green-title kf-green-desc" color="#f4f0e6">
+  <title id="kf-green-title">Zero upload, greener by default</title>
+  <desc id="kf-green-desc">An open book with a leaf growing from its spine, inside a dashed local-only orbit, with a crossed-out upload arrow. Used for the privacy and energy section.</desc>
+
+  <!-- local-only orbit -->
+  <circle cx="180" cy="116" r="94" fill="none" stroke="currentColor" stroke-opacity="0.16" stroke-width="1.5" stroke-dasharray="2 9" stroke-linecap="round" />
+
+  <!-- open book -->
+  <g fill="#f4f0e6" fill-opacity="0.025" stroke="currentColor" stroke-opacity="0.65" stroke-width="1.6" stroke-linejoin="round">
+    <path d="M112 174c24-11 50-11 68 0v20c-18-11-44-11-68 0z" />
+    <path d="M248 174c-24-11-50-11-68 0v20c18-11 44-11 68 0z" />
+  </g>
+  <path d="M180 174v20" stroke="currentColor" stroke-opacity="0.28" stroke-width="1.5" stroke-linecap="round" />
+
+  <!-- sprout -->
+  <path d="M180 172c5-22 11-40 24-56" fill="none" stroke="#a8f06a" stroke-opacity="0.8" stroke-width="1.6" stroke-linecap="round" />
+  <path d="M207 105c1-27 21-47 47-47 0 27-20 47-47 47z" fill="#a8f06a" fill-opacity="0.09" stroke="#a8f06a" stroke-opacity="0.85" stroke-width="1.5" stroke-linejoin="round" />
+  <path d="M209 103c11-13 25-24 42-32" fill="none" stroke="#a8f06a" stroke-opacity="0.55" stroke-width="1.5" stroke-linecap="round" />
+  <circle cx="262" cy="38" r="2" fill="#a8f06a" fill-opacity="0.5" />
+  <circle cx="244" cy="28" r="1.4" fill="#a8f06a" fill-opacity="0.35" />
+
+  <!-- upload, denied -->
+  <circle cx="286" cy="62" r="25" fill="#0b100e" stroke="currentColor" stroke-opacity="0.2" stroke-width="1.5" />
+  <g fill="none" stroke="currentColor" stroke-opacity="0.8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M286 72V55" />
+    <path d="M280 61l6-6 6 6" />
+  </g>
+  <path d="M272 76l28-28" stroke="#e8a87c" stroke-width="2" stroke-linecap="round" />
+</svg>

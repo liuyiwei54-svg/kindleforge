@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 190" width="260" height="190" role="img" aria-labelledby="kf-empty-title kf-empty-desc" color="#f4f0e6">
+  <title id="kf-empty-title">No files yet</title>
+  <desc id="kf-empty-desc">A dashed drop zone with a single folded page and an emerald plus badge. Use it for the empty workbench and empty batch list.</desc>
+
+  <!-- drop zone -->
+  <rect x="28" y="26" width="204" height="138" rx="18" fill="currentColor" fill-opacity="0.02" stroke="currentColor" stroke-opacity="0.24" stroke-width="1.5" stroke-dasharray="5 7" stroke-linecap="round" />
+
+  <!-- page with folded corner -->
+  <path d="M104 52h34l18 18v50a4 4 0 0 1-4 4h-48a4 4 0 0 1-4-4V56a4 4 0 0 1 4-4z" fill="none" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" stroke-linejoin="round" />
+  <path d="M138 52v18h18" fill="none" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" stroke-linejoin="round" />
+  <g fill="currentColor" fill-opacity="0.22">
+    <rect x="116" y="88" width="32" height="3.5" rx="1.75" />
+    <rect x="116" y="98" width="26" height="3.5" rx="1.75" />
+    <rect x="116" y="108" width="30" height="3.5" rx="1.75" />
+  </g>
+
+  <!-- emerald plus badge -->
+  <circle cx="166" cy="50" r="13" fill="#111815" stroke="#a8f06a" stroke-opacity="0.55" stroke-width="1.5" />
+  <path d="M166 44v12M160 50h12" stroke="#a8f06a" stroke-width="1.5" stroke-linecap="round" />
+
+  <!-- upload arrow -->
+  <g stroke="currentColor" stroke-opacity="0.4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M130 150v-16" />
+    <path d="M123 141l7-7 7 7" />
+  </g>
+</svg>

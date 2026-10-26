@@ -1,0 +1,41 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ${KINDLEFORGE_DOCKERFILE:-Dockerfile}
+    image: kindleforge:${KINDLEFORGE_TAG:-slim}
+    ports:
+      - '${PORT:-3100}:3100'
+    environment:
+      NODE_ENV: production
+      # Hard caps (bytes). Keep them explicit so a self-hoster knows the deal.
+      KF_MAX_UPLOAD_BYTES: '209715200'
+      KF_JOB_TTL_MS: '600000'
+      # tmpfs is small; don't demand 2 GiB of free space inside it.
+      KF_MIN_FREE_BYTES: '536870912'
+    tmpfs:
+      # Conversion scratch space lives in RAM and dies with the container:
+      # nothing survives a restart, which is the point.
+      - /tmp/kindleforge:size=3g,mode=1777
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+
+  # docker compose --profile full up --build
+  # Full image: Calibre + Pandoc + Tesseract, i.e. MOBI/AZW3/PDF/OCR targets.
+  web-full:
+    profiles: ['full']
+    build:
+      context: .
+      dockerfile: Dockerfile.full
+    image: kindleforge:full
+    ports:
+      - '${FULL_PORT:-3101}:3100'
+    tmpfs:
+      - /tmp/kindleforge:size=4g,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
