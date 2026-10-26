@@ -29,3 +29,6 @@ coverage/
 tmp/
 .kindleforge/
 tests/fixtures/*.generated.*
+
+# ts incremental
+*.tsbuildinfo
