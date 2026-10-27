@@ -1,5 +1,12 @@
 # KindleForge · 铸书
 
+<p>
+  <a href="https://github.com/liuyiwei54-svg/kindleforge/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/liuyiwei54-svg/kindleforge/actions/workflows/ci.yml/badge.svg" /></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-8a6d3b.svg" /></a>
+  <a href="https://liuyiwei54-svg.github.io/kindleforge/"><img alt="Screenshots on GitHub Pages" src="https://img.shields.io/badge/screenshots-GitHub%20Pages-8a6d3b.svg" /></a>
+  <a href=".github/workflows/pages.yml"><img alt="Deploy: GitHub Pages" src="https://img.shields.io/badge/deploy-GitHub%20Pages-1f7a4d.svg" /></a>
+</p>
+
 > 把任何一份文件，变成 Kindle 上最好读的那本书。
 > Any file, forged into the book it deserves to be on Kindle.
 

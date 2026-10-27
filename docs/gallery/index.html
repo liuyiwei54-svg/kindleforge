@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KindleForge · 铸书 — 界面截图</title>
+    <meta name="description" content="KindleForge（铸书）界面截图：落地页、转换工作台、移动端。本地优先、零上传的 Kindle 电子书转换站。" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f6f4ef;
+        --fg: #1c1a17;
+        --muted: #6b6558;
+        --line: #ded8cb;
+        --card: #fffdf8;
+        --accent: #8a6d3b;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #14120f;
+          --fg: #ece6da;
+          --muted: #a39a89;
+          --line: #2e2a23;
+          --card: #1c1915;
+          --accent: #d4b483;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: clamp(24px, 6vw, 72px) clamp(16px, 5vw, 56px);
+        background: var(--bg);
+        color: var(--fg);
+        font: 16px/1.65 "Iowan Old Style", "Palatino Linotype", Palatino, Georgia,
+          "Songti SC", "Noto Serif CJK SC", serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      main { max-width: 1080px; margin: 0 auto; }
+      header { border-bottom: 1px solid var(--line); padding-bottom: 24px; margin-bottom: 40px; }
+      h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.15; margin: 0 0 8px; letter-spacing: -0.01em; }
+      .lede { color: var(--muted); margin: 0; font-size: 1.05rem; }
+      .repo {
+        display: inline-block; margin-top: 18px; padding: 8px 14px;
+        border: 1px solid var(--line); border-radius: 999px;
+        color: var(--accent); text-decoration: none;
+        font: 500 14px/1 -apple-system, "Segoe UI", "PingFang SC", sans-serif;
+      }
+      .repo:hover { border-color: var(--accent); }
+      figure { margin: 0 0 56px; }
+      figure img {
+        display: block; width: 100%; height: auto;
+        border: 1px solid var(--line); border-radius: 12px;
+        background: var(--card);
+        box-shadow: 0 12px 32px -18px rgba(0, 0, 0, 0.45);
+      }
+      figcaption { margin-top: 12px; color: var(--muted); font-size: 0.94rem; }
+      .mobile img { max-width: 390px; margin: 0 auto; }
+      footer {
+        border-top: 1px solid var(--line); margin-top: 56px; padding-top: 20px;
+        color: var(--muted); font-size: 0.88rem;
+      }
+      footer a { color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>KindleForge · 铸书</h1>
+        <p class="lede">
+          本地优先 · 零上传 · 无广告 · 开源可自托管 —— 把任何一份文件，变成 Kindle 上最好读的那本书。
+        </p>
+        <a class="repo" href="https://github.com/liuyiwei54-svg/kindleforge">GitHub 源码 →</a>
+      </header>
+
+      <figure>
+        <img src="screenshots/home-hero.png" alt="KindleForge 落地页：拖拽上传区与 Kindle 屏实时排版预览" />
+        <figcaption>
+          落地页：真实可用的拖拽上传 + Kindle 屏实时排版预览；「0 字节上传 / 15 类输入 / 0 追踪 / 100% 可自托管」。
+        </figcaption>
+      </figure>
+
+      <figure>
+        <img src="screenshots/workspace.png" alt="KindleForge 转换工作台：多文件队列、设备预设、排版参数与 OCR 开关" />
+        <figcaption>
+          工作台：多文件队列、Kindle 设备预设、排版参数、扫描件 OCR，以及「本地处理 · 未上传」的实时状态。
+        </figcaption>
+      </figure>
+
+      <figure class="mobile">
+        <img src="screenshots/home-mobile.png" alt="KindleForge 移动端落地页" />
+        <figcaption>移动端：同一套界面，单手可用，无第三方请求。</figcaption>
+      </figure>
+
+      <footer>
+        截图来自本地真实运行的实例（<code>npx next dev -p 3100</code>），未做后期修饰。
+        项目以 MIT 协议开源：<a href="https://github.com/liuyiwei54-svg/kindleforge">liuyiwei54-svg/kindleforge</a>。
+      </footer>
+    </main>
+  </body>
+</html>
