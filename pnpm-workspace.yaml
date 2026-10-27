@@ -1,6 +1,12 @@
+# Install-script allow-list for pnpm (CI + self-hosted builds).
+# Only these two packages may run postinstall scripts; everything else is blocked.
+# `allowBuilds` is the pnpm 11 form; `onlyBuiltDependencies` keeps pnpm 9/10 working
+# with the same intent. Both are needed so a fresh `pnpm install --frozen-lockfile`
+# succeeds without a TTY (CI) instead of failing with ERR_PNPM_IGNORED_BUILDS.
 allowBuilds:
-  esbuild: set this to true or false
-  sharp: set this to true or false
+  esbuild: true
+  sharp: true
+
 onlyBuiltDependencies:
   - sharp
   - esbuild
