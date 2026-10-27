@@ -40,7 +40,7 @@ KindleForge 是一个电子书转换站：EPUB / MOBI / AZW3 / PDF / DOCX / TXT 
 ## 30 秒跑起来
 
 ```bash
-# 需要 Node 20+
+# 需要 Node 22.13+（pnpm 11 的要求；Node 20 已 EOL）
 pnpm install          # 或 npm install
 npx next dev -p 3100  # http://127.0.0.1:3100
 ```
