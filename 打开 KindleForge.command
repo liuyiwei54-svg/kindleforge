@@ -25,7 +25,7 @@ if is_up; then
 fi
 
 echo "正在启动 KindleForge…（第一次启动约 3-5 秒）"
-nohup npx next start -p 3100 > /tmp/kindleforge.log 2>&1 &
+KF_PORT=3100 KF_ALLOWED_HOSTS="127.0.0.1,localhost" nohup npx next start -H 127.0.0.1 -p 3100 > /tmp/kindleforge.log 2>&1 &
 
 for _ in $(seq 1 40); do
   sleep 0.5
@@ -42,7 +42,7 @@ else
   echo "启动失败，最近日志如下："
   tail -20 /tmp/kindleforge.log
   echo
-  echo "可以手动在终端运行：cd $PROJECT && npx next start -p 3100"
+  echo "可以手动在终端运行：cd $PROJECT && npx next start -H 127.0.0.1 -p 3100"
   read -r -p "按回车关闭…" _
   exit 1
 fi
