@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -20,19 +21,26 @@ import { Select } from '@/components/ui/select';
 import { capabilities, DEVICES, formatOfFilename, OUTPUT_FORMATS } from '@/lib/engine/formats';
 import type { DeviceId, FormatId, KindleOptions } from '@/lib/engine/types';
 import { ApiError, cancelJob, downloadUrlFor, queueConversion, waitForJob } from '@/lib/client/api';
+import { saveFileToLibrary, saveJobToLibrary, sendLibraryEntry, updateLibraryEntry } from '@/lib/client/library';
+import { canSendFormat, libraryMetadataPatch } from '@/lib/client/library-utils';
+import { fetchSettings, saveSettings } from '@/lib/client/settings';
 import { isLocalPair, loadCapabilities, pairOf, sharedOutputs } from '@/lib/client/capabilities';
 import { downloadUrlFile, fetchAsUint8, saveBlob, saveZip } from '@/lib/client/download';
 import { describeError, isAbortError, makeAbortError } from '@/lib/client/errors';
 import { formatBytes, MAX_FILE_BYTES } from '@/lib/client/estimate';
 import { localWorkerSupported, startLocalConversion } from '@/lib/client/local-convert';
 import { clearRecent, readRecent, rememberRecent, timeAgo } from '@/lib/client/recent';
-import type { ConversionOutput, FileItem, FormatCapabilities, RecentEntry } from '@/lib/client/types';
+import type { ConversionOutput, FileItem, FormatCapabilities, LibraryAction, RecentEntry } from '@/lib/client/types';
+import type { LibraryEntry } from '@/lib/shared/types';
+import { getDict } from '@/lib/i18n';
 import { fill } from '@/lib/i18n/fill';
 import { formatName } from '@/lib/i18n/formats';
 import { localePath, type Locale } from '@/lib/i18n/paths';
 import type { Dict } from '@/lib/i18n/types';
 import { Dropzone } from './dropzone';
 import { FileCard } from './file-card';
+import { guessBookInfo } from '@/lib/client/metadata';
+import { MetadataDialog } from './metadata-dialog';
 import { OptionsPanel, type ExtraOptionsState, type OcrChoice, type TypographyState } from './options-panel';
 
 export interface WorkspaceProps {
@@ -114,12 +122,22 @@ export function Workspace({ locale, dict, errors, initialFiles, initialTarget, o
   const [announcement, setAnnouncement] = useState('');
   const [actionError, setActionError] = useState<string | null>(null);
   const [recent, setRecent] = useState<RecentEntry[]>([]);
+  const [autoSave, setAutoSave] = useState(false);
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
+  const [settingsError, setSettingsError] = useState(false);
+  const [smtpConfigured, setSmtpConfigured] = useState(false);
+  const [metaTarget, setMetaTarget] = useState<FileItem | null>(null);
+  const [libraryStates, setLibraryStates] = useState<Record<string, LibraryAction>>({});
+  const libraryDict = getDict(locale).library;
+  const router = useRouter();
 
   const itemsRef = useRef(items);
   const capsRef = useRef(caps);
   const canceledRef = useRef<Set<string>>(new Set());
   const stopRef = useRef(false);
   const activeRef = useRef<{ id: string; cancel: () => void } | null>(null);
+  const autoSaveRef = useRef(false);
+  const libraryStatesRef = useRef<Record<string, LibraryAction>>({});
 
   useEffect(() => {
     itemsRef.current = items;
@@ -127,6 +145,30 @@ export function Workspace({ locale, dict, errors, initialFiles, initialTarget, o
   useEffect(() => {
     capsRef.current = caps;
   }, [caps]);
+  useEffect(() => {
+    libraryStatesRef.current = libraryStates;
+  }, [libraryStates]);
+  useEffect(() => {
+    let alive = true;
+    fetchSettings()
+      .then((value) => {
+        if (!alive) return;
+        setAutoSave(value.library.autoSave);
+        autoSaveRef.current = value.library.autoSave;
+        setSmtpConfigured(
+          Boolean(value.send.smtp.host && value.send.smtp.user && value.send.smtp.hasPassword && value.send.kindleEmail),
+        );
+        setSettingsLoaded(true);
+      })
+      .catch(() => {
+        if (!alive) return;
+        setSettingsLoaded(true);
+        setSettingsError(true);
+      });
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   useEffect(() => {
     setRecent(readRecent());
@@ -158,9 +200,13 @@ export function Workspace({ locale, dict, errors, initialFiles, initialTarget, o
     setItems((previous) => previous.map((item) => (item.id === id ? { ...item, ...patch } : item)));
   }, []);
 
-  const buildOptions = useCallback((): KindleOptions => {
-    return {
-      device,
+  const buildOptions = useCallback(
+    (item?: FileItem): KindleOptions => {
+      const metadata = item?.metadata;
+      const hasMetadata = metadata && (metadata.title || metadata.author || metadata.publisher || metadata.language || metadata.description);
+      return {
+        device,
+        ...(hasMetadata ? { metadata } : {}),
       typography: {
         indent: typography.indent,
         lineHeight: typography.lineHeight,
@@ -172,9 +218,75 @@ export function Workspace({ locale, dict, errors, initialFiles, initialTarget, o
       mangaMode: extras.mangaMode,
       ocr: ocrRelevant && ocr.enabled ? true : undefined,
       ocrLanguage:
-        ocrRelevant && ocr.enabled ? (ocr.language === 'auto' ? 'chi_sim+eng' : ocr.language) : undefined,
-    };
-  }, [device, typography, extras, ocr, ocrRelevant]);
+          ocrRelevant && ocr.enabled ? (ocr.language === 'auto' ? 'chi_sim+eng' : ocr.language) : undefined,
+      };
+    },
+    [device, typography, extras, ocr, ocrRelevant],
+  );
+
+  const performSave = useCallback(
+    async (id: string, result: ConversionOutput, jobId?: string): Promise<LibraryEntry | null> => {
+      const current = itemsRef.current.find((item) => item.id === id);
+      setLibraryStates((previous) => ({ ...previous, [id]: { ...previous[id], state: 'saving' } }));
+      try {
+        let entry: LibraryEntry;
+        if (result.data) {
+          const file = new File([result.data as unknown as BlobPart], result.filename, { type: result.mime });
+          entry = await saveFileToLibrary(file, result.filename, {
+            title: current?.metadata?.title || guessBookInfo(result.filename).title,
+            ...(current?.metadata?.author ? { author: current.metadata.author } : {}),
+          });
+        } else if (jobId) {
+          entry = await saveJobToLibrary(jobId);
+        } else {
+          throw new ApiError('INTERNAL');
+        }
+
+        let hint: string | undefined;
+        const metadataPatch = libraryMetadataPatch(entry, {
+          isbn: current?.isbn,
+          coverUrl: current?.metadata?.coverUrl,
+        });
+        if (Object.keys(metadataPatch).length > 0) {
+          try {
+            entry = await updateLibraryEntry(entry.id, metadataPatch);
+          } catch (error) {
+            hint =
+              error instanceof ApiError
+                ? [error.message, error.hint].filter(Boolean).join(' · ')
+                : error instanceof Error
+                  ? error.message
+                  : undefined;
+          }
+        }
+
+        setLibraryStates((previous) => ({ ...previous, [id]: { state: 'saved', entryId: entry.id, hint } }));
+        setAnnouncement(dict.result.saved);
+        return entry;
+      } catch (error) {
+        const copy = describeError(error, errors);
+        setLibraryStates((previous) => ({
+          ...previous,
+          [id]: { state: 'error', entryId: previous[id]?.entryId, hint: `${copy.message} · ${copy.hint}` },
+        }));
+        return null;
+      }
+    },
+    [dict.result.saved, errors],
+  );
+
+  const toggleAutoSave = useCallback(
+    (next: boolean) => {
+      setAutoSave(next);
+      autoSaveRef.current = next;
+      saveSettings({ library: { autoSave: next } }).catch(() => {
+        setAutoSave(!next);
+        autoSaveRef.current = !next;
+        setActionError(dict.options.autoSaveUnavailable);
+      });
+    },
+    [dict.options.autoSaveUnavailable],
+  );
 
   const convertItem = useCallback(
     async (
@@ -214,6 +326,7 @@ export function Workspace({ locale, dict, errors, initialFiles, initialTarget, o
           };
           update(item.id, { status: 'done', progress: 100, mode: 'local', result, notice: undefined });
           setRecent(rememberRecent(itemTarget));
+          if (autoSaveRef.current) void performSave(item.id, result);
           return 'done';
         } catch (error) {
           activeRef.current = null;
@@ -276,6 +389,7 @@ export function Workspace({ locale, dict, errors, initialFiles, initialTarget, o
         };
         update(item.id, { status: 'done', progress: 100, mode: 'server', result, notice: undefined });
         setRecent(rememberRecent(itemTarget));
+        if (autoSaveRef.current) void performSave(item.id, result, jobId);
         return 'done';
       } catch (error) {
         if (isAbortError(error) || canceledRef.current.has(item.id)) {
@@ -288,7 +402,7 @@ export function Workspace({ locale, dict, errors, initialFiles, initialTarget, o
         if (activeRef.current?.id === item.id) activeRef.current = null;
       }
     },
-    [dict.fallback, errors, update],
+    [dict.fallback, errors, performSave, update],
   );
 
   const start = useCallback(async () => {
@@ -313,7 +427,6 @@ export function Workspace({ locale, dict, errors, initialFiles, initialTarget, o
     setAnnouncement(dict.starting);
     canceledRef.current.clear();
     stopRef.current = false;
-    const runOptions = buildOptions();
     let doneCount = 0;
     let failedCount = 0;
     let canceledCount = 0;
@@ -323,7 +436,7 @@ export function Workspace({ locale, dict, errors, initialFiles, initialTarget, o
       if (canceledRef.current.has(snapshot.id)) continue;
       const current = itemsRef.current.find((item) => item.id === snapshot.id);
       if (!current || current.status === 'done' || current.status === 'canceled') continue;
-      const outcome = await convertItem(current, target, runOptions);
+      const outcome = await convertItem(current, target, buildOptions(current));
       if (outcome === 'done') doneCount += 1;
       if (outcome === 'error') failedCount += 1;
       if (outcome === 'canceled') canceledCount += 1;
@@ -409,7 +522,7 @@ export function Workspace({ locale, dict, errors, initialFiles, initialTarget, o
       };
       setItems((previous) => previous.map((entry) => (entry.id === item.id ? fresh : entry)));
       setRunning(true);
-      const outcome = await convertItem(fresh, target, buildOptions());
+      const outcome = await convertItem(fresh, target, buildOptions(fresh));
       setRunning(false);
       setAnnouncement(outcome === 'error' ? dict.errorTitle : dict.allDone);
     },
@@ -454,6 +567,52 @@ export function Workspace({ locale, dict, errors, initialFiles, initialTarget, o
       setZipping(false);
     }
   }, [completed, dict.zip, dict.zipError, zipping]);
+
+  const handleSave = useCallback(
+    (item: FileItem) => {
+      if (!item.result) return;
+      void performSave(item.id, item.result, item.jobId);
+    },
+    [performSave],
+  );
+
+  const handleSend = useCallback(
+    async (item: FileItem) => {
+      if (!smtpConfigured) {
+        router.push(`${localePath(locale, '/settings')}?focus=send`);
+        return;
+      }
+      if (!item.result) return;
+      if (!canSendFormat(target)) {
+        setLibraryStates((previous) => ({
+          ...previous,
+          [item.id]: { ...previous[item.id], state: 'error', hint: libraryDict.send.unsupported },
+        }));
+        return;
+      }
+
+      let entryId = libraryStatesRef.current[item.id]?.entryId;
+      if (!entryId) {
+        const entry = await performSave(item.id, item.result, item.jobId);
+        entryId = entry?.id;
+      }
+      if (!entryId) return;
+
+      setLibraryStates((previous) => ({ ...previous, [item.id]: { state: 'sending', entryId } }));
+      try {
+        const result = await sendLibraryEntry(entryId);
+        setLibraryStates((previous) => ({ ...previous, [item.id]: { state: 'sent', entryId } }));
+        setAnnouncement(result.message || libraryDict.send.sentGeneric);
+      } catch (error) {
+        const copy = describeError(error, errors);
+        setLibraryStates((previous) => ({
+          ...previous,
+          [item.id]: { state: 'error', entryId, hint: `${copy.message} · ${copy.hint}` },
+        }));
+      }
+    },
+    [errors, libraryDict.send.sentGeneric, libraryDict.send.unsupported, locale, performSave, router, smtpConfigured, target],
+  );
 
   const chooseDevice = (id: DeviceId) => {
     setDevice(id);
@@ -589,6 +748,12 @@ export function Workspace({ locale, dict, errors, initialFiles, initialTarget, o
                       onCancel={() => cancelItem(item.id)}
                       onDownload={() => downloadItem(item)}
                       onRetry={() => void retryItem(item)}
+                      onAutoFill={() => setMetaTarget(item)}
+                      onSave={() => handleSave(item)}
+                      onSend={() => void handleSend(item)}
+                      library={libraryStates[item.id] ?? { state: 'idle' }}
+                      libraryCopy={libraryDict}
+                      smtpConfigured={smtpConfigured}
                     />
                   </li>
                 ))}
@@ -664,6 +829,10 @@ export function Workspace({ locale, dict, errors, initialFiles, initialTarget, o
             ocr={ocr}
             ocrRelevant={ocrRelevant}
             onOcr={setOcr}
+            autoSave={autoSave}
+            onAutoSave={toggleAutoSave}
+            autoSaveHint={settingsError ? dict.options.autoSaveUnavailable : dict.options.autoSaveHint}
+            autoSaveDisabled={!settingsLoaded || settingsError}
             disabled={running}
           />
 
@@ -767,6 +936,21 @@ export function Workspace({ locale, dict, errors, initialFiles, initialTarget, o
           </div>
         </aside>
       </div>
+
+      {metaTarget ? (
+        <MetadataDialog
+          open
+          onClose={() => setMetaTarget(null)}
+          locale={locale}
+          filename={metaTarget.name}
+          initial={{ metadata: metaTarget.metadata, isbn: metaTarget.isbn }}
+          onApply={(value) => {
+            update(metaTarget.id, { metadata: value.metadata, isbn: value.isbn });
+            setMetaTarget(null);
+            setAnnouncement(dict.metadata.applied);
+          }}
+        />
+      ) : null}
     </section>
   );
 }

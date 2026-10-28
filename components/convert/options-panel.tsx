@@ -74,6 +74,10 @@ export function OptionsPanel({
   ocr,
   ocrRelevant,
   onOcr,
+  autoSave,
+  onAutoSave,
+  autoSaveHint,
+  autoSaveDisabled,
   disabled,
 }: {
   dict: Dict['convert']['options'];
@@ -84,6 +88,10 @@ export function OptionsPanel({
   ocr: OcrChoice;
   ocrRelevant: boolean;
   onOcr: (next: OcrChoice) => void;
+  autoSave: boolean;
+  onAutoSave: (next: boolean) => void;
+  autoSaveHint: string;
+  autoSaveDisabled?: boolean;
   disabled?: boolean;
 }) {
   return (
@@ -153,6 +161,16 @@ export function OptionsPanel({
           onChange={(mangaMode) => onExtras({ ...extras, mangaMode })}
           disabled={disabled}
         />
+      </div>
+
+      <div className="mt-4 space-y-2 border-t border-paper/10 pt-4">
+        <Switch
+          label={dict.autoSave}
+          checked={autoSave}
+          onChange={onAutoSave}
+          disabled={disabled || autoSaveDisabled}
+        />
+        <p className="text-[11px] leading-5 text-paper-dim/70">{autoSaveHint}</p>
       </div>
 
       <div className="mt-4 space-y-3 border-t border-paper/10 pt-4">

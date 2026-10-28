@@ -8,6 +8,8 @@ const LOCALES: Locale[] = ['zh', 'en'];
 const STATIC_PATHS: Array<{ path: string; priority: number; changeFrequency: 'daily' | 'weekly' | 'monthly' }> = [
   { path: '/', priority: 1, changeFrequency: 'weekly' },
   { path: '/convert', priority: 0.9, changeFrequency: 'weekly' },
+  { path: '/library', priority: 0.7, changeFrequency: 'daily' },
+  { path: '/settings', priority: 0.5, changeFrequency: 'monthly' },
   { path: '/green', priority: 0.7, changeFrequency: 'monthly' },
   { path: '/docs', priority: 0.7, changeFrequency: 'monthly' },
 ];

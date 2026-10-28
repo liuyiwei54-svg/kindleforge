@@ -102,6 +102,15 @@ curl -s localhost:3100/api/health | jq
 
 多文件队列、Kindle 设备预设、排版参数、扫描件 OCR，以及「本地处理 · 未上传」的实时状态。
 
+## 本地书库与 Send to Kindle
+
+转换完成后可以「保存到书库」（开启自动保存后每次转换都会落盘），书库默认在 `~/KindleForge/`，文件按 `书名 - 作者.epub` 命名；也可以改成外置硬盘或同步目录。
+
+- `/library` 里搜索、排序、按格式筛选、下载、在 Finder 中显示、补全信息或删除。
+- 「自动补全」会查书名/作者/ISBN，来源依次是豆瓣读书 → Google Books → Open Library（可单独关闭）。选中候选后，书名、作者、封面会写进本次转换；保存到书库时会一并写进 EPUB 的 OPF 与封面页。
+- `/settings` 的 Send to Kindle 用你自己的 SMTP 账号直发：填主机、端口、用户名、发件地址、应用专用密码和 `xxx@kindle.com` 邮箱即可。配置与密码只存本机（`~/.kindleforge/settings.json`，0600，密码 AES-256-GCM 加密，接口只回「是否已保存」），重启后仍然有效；没配好时可以先下载 `.eml` 草稿，用邮件客户端手动发送。
+- 注意：发件地址必须加入 Amazon「已批准的个人文档电子邮件列表」，否则亚马逊会静默丢弃；单封附件默认上限 25MB（Amazon 上限 50MB，Gmail 往往更严）。
+
 ## 格式矩阵
 
 输入（15）：`epub` `mobi` `azw` `azw3` `pdf` `docx` `odt` `txt` `md` `html` `rtf` `fb2` `cbz` `cbr` `image`
@@ -120,6 +129,7 @@ curl -s localhost:3100/api/health | jq
 3. **无追踪**：没有 Google Analytics、没有像素、没有第三方字体/CDN，CSP 默认拒绝外部脚本。
 4. **可自托管**：数据可以永远不离开你的机器或内网。
 5. **诚实的能耗叙事**：我们不编造「节省多少克碳」。可验证的事实是——本地转换少一次上传、少一台常开服务器；Docker 镜像按需启动，任务结束即退出。
+6. **元数据是可选联网**：只有你主动点「自动补全」时才把书名/作者/ISBN 查询串发给 Google Books、Open Library 或豆瓣读书；书文件永不上传，也没有账号/cookie。豆瓣无公开 API，属个人使用 best-effort，可在设置里关闭；封面经本机代理获取，页面不直接请求第三方图片。
 
 ---
 

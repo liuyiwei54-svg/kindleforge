@@ -1,13 +1,13 @@
 'use client';
 
-import { AlertTriangle, ArrowRight, BookOpen, FileText, Image as ImageIcon, Loader2, RotateCcw, Server, ShieldCheck, X } from 'lucide-react';
+import { AlertTriangle, ArrowRight, BookOpen, FileText, Image as ImageIcon, Loader2, RotateCcw, Server, ShieldCheck, Wand2, X } from 'lucide-react';
 import type { Dict } from '@/lib/i18n/types';
 import { FORMAT_INFO } from '@/lib/engine/formats';
 import { formatName } from '@/lib/i18n/formats';
 import type { Locale } from '@/lib/i18n/paths';
 import type { FormatId } from '@/lib/engine/types';
 import { estimateReadingMinutes, formatBytes } from '@/lib/client/estimate';
-import type { FileItem } from '@/lib/client/types';
+import type { FileItem, LibraryAction } from '@/lib/client/types';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { fill } from '@/lib/i18n/fill';
@@ -32,6 +32,12 @@ export function FileCard({
   onCancel,
   onDownload,
   onRetry,
+  onAutoFill,
+  onSave,
+  onSend,
+  library,
+  libraryCopy,
+  smtpConfigured,
   disabled,
 }: {
   item: FileItem;
@@ -42,6 +48,12 @@ export function FileCard({
   onCancel: () => void;
   onDownload: () => void;
   onRetry: () => void;
+  onAutoFill: () => void;
+  onSave: () => void;
+  onSend: () => void;
+  library: LibraryAction;
+  libraryCopy: Dict['library'];
+  smtpConfigured: boolean;
   disabled: boolean;
 }) {
   const from = FORMAT_INFO[item.from];
@@ -113,6 +125,34 @@ export function FileCard({
             ) : null}
           </div>
 
+          {item.metadata?.title ? (
+            <p className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-moss-400/90">
+              <Badge tone="moss" mono>
+                {dict.metadata.applied}
+              </Badge>
+              <span>
+                {item.metadata.author
+                  ? fill(dict.metadata.summary, { title: item.metadata.title, author: item.metadata.author })
+                  : fill(dict.metadata.summaryNoAuthor, { title: item.metadata.title })}
+              </span>
+              {item.status !== 'done' ? (
+                <button
+                  type="button"
+                  onClick={onAutoFill}
+                  disabled={disabled}
+                  className="rounded-full px-1.5 py-0.5 text-paper-dim underline-offset-4 transition-colors hover:text-paper hover:underline focus-visible:ring-2 focus-visible:ring-moss-500 focus-visible:outline-none disabled:opacity-40"
+                >
+                  {dict.metadata.button}
+                </button>
+              ) : null}
+            </p>
+          ) : item.status !== 'done' && !active ? (
+            <Button variant="ghost" size="sm" className="mt-1.5" onClick={onAutoFill} disabled={disabled}>
+              <Wand2 aria-hidden="true" className="h-3.5 w-3.5" />
+              {dict.metadata.button}
+            </Button>
+          ) : null}
+
           {active ? (
             <div className="mt-3 flex items-center gap-3">
               <ProgressBar
@@ -165,6 +205,13 @@ export function FileCard({
                 localBadge: dict.localBadge,
               }}
               onDownload={onDownload}
+              onSave={onSave}
+              onSend={onSend}
+              library={library}
+              smtpConfigured={smtpConfigured}
+              locale={locale}
+              resultCopy={dict.result}
+              sendCopy={libraryCopy.send}
             />
           ) : null}
         </div>

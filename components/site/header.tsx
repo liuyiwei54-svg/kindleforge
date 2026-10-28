@@ -27,9 +27,11 @@ export function Header({ locale, path = '/' }: { locale: Locale; path?: string }
   const home = localePath(locale, '/');
   const links = [
     { href: localePath(locale, '/convert'), label: dict.nav.converter },
+    { href: localePath(locale, '/library'), label: dict.nav.library },
     { href: `${home === '/' ? '' : home}/#formats`, label: dict.nav.formats },
     { href: localePath(locale, '/green'), label: dict.nav.green },
     { href: localePath(locale, '/docs'), label: dict.nav.docs },
+    { href: localePath(locale, '/settings'), label: dict.nav.settings },
   ];
 
   return (
@@ -43,7 +45,7 @@ export function Header({ locale, path = '/' }: { locale: Locale; path?: string }
           </Badge>
         </Link>
 
-        <nav aria-label={locale === 'zh' ? '主导航' : 'Main navigation'} className="hidden items-center gap-1 md:flex">
+        <nav aria-label={locale === 'zh' ? '主导航' : 'Main navigation'} className="hidden items-center gap-1 lg:flex">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -76,7 +78,7 @@ export function Header({ locale, path = '/' }: { locale: Locale; path?: string }
             {dict.nav.langSwitch}
           </Link>
 
-          <details className="group relative md:hidden">
+          <details className="group relative lg:hidden">
             <summary className="inline-flex cursor-pointer list-none items-center justify-center rounded-full border border-paper/20 p-2 text-paper-dim transition-colors hover:text-paper focus-visible:ring-2 focus-visible:ring-moss-500 focus-visible:outline-none [&::-webkit-details-marker]:hidden">
               <Menu aria-hidden="true" className="h-4.5 w-4.5" />
               <span className="sr-only">{dict.nav.menu}</span>

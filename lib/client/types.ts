@@ -35,6 +35,24 @@ export interface FileError {
   hint: string;
 }
 
+export interface FileMetadata {
+  title?: string;
+  author?: string;
+  language?: string;
+  publisher?: string;
+  description?: string;
+  /** Candidate cover URL, applied to the saved library entry / EPUB on save. */
+  coverUrl?: string;
+}
+
+export type LibraryActionState = 'idle' | 'saving' | 'saved' | 'sending' | 'sent' | 'error';
+
+export interface LibraryAction {
+  state: LibraryActionState;
+  entryId?: string;
+  hint?: string;
+}
+
 export interface FileItem {
   id: string;
   file: File;
@@ -47,6 +65,10 @@ export interface FileItem {
   jobId?: string;
   result?: ConversionOutput;
   error?: FileError;
+  /** Metadata applied to the next conversion (title/author etc.). */
+  metadata?: FileMetadata;
+  /** Collected separately: the engine options type has no ISBN field. */
+  isbn?: string;
   /** Non-fatal note, e.g. local→server fallback. */
   notice?: string;
 }

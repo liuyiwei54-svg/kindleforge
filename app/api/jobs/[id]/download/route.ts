@@ -1,3 +1,4 @@
+import { guardApiRequest } from '../../../../../lib/server/request';
 /**
  * GET /api/jobs/:id/download — stream the result with a correct UTF-8
  * Content-Disposition (Chinese filenames survive) and the result MIME type.
@@ -45,7 +46,9 @@ interface RouteContext {
   params: Promise<{ id: string }>;
 }
 
-export async function GET(_request: Request, context: RouteContext): Promise<Response> {
+export async function GET(request: Request, context: RouteContext): Promise<Response> {
+  const forbidden = guardApiRequest(request);
+  if (forbidden) return forbidden;
   try {
     const params = await context.params;
     const id = params?.id;

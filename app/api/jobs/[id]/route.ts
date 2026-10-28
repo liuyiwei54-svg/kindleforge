@@ -1,3 +1,4 @@
+import { guardApiRequest } from '../../../../lib/server/request';
 /**
  * GET    /api/jobs/:id — poll status, progress, result metadata
  * DELETE /api/jobs/:id — immediate removal of record + temp files (204)
@@ -43,7 +44,9 @@ async function idFrom(context: RouteContext): Promise<string> {
   return id;
 }
 
-export async function GET(_request: Request, context: RouteContext): Promise<Response> {
+export async function GET(request: Request, context: RouteContext): Promise<Response> {
+  const forbidden = guardApiRequest(request);
+  if (forbidden) return forbidden;
   try {
     const id = await idFrom(context);
     const job = getJobStore().get(id);
@@ -54,7 +57,9 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
   }
 }
 
-export async function DELETE(_request: Request, context: RouteContext): Promise<Response> {
+export async function DELETE(request: Request, context: RouteContext): Promise<Response> {
+  const forbidden = guardApiRequest(request);
+  if (forbidden) return forbidden;
   try {
     const id = await idFrom(context);
     const store = getJobStore();

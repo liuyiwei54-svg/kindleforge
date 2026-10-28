@@ -1,3 +1,4 @@
+import { guardApiRequest } from '../../../lib/server/request';
 /**
  * POST /api/convert — multipart upload → 202 { jobId }.
  *
@@ -73,6 +74,8 @@ function isFileLike(value: FormDataEntryValue | null): value is File {
 }
 
 export async function POST(request: Request): Promise<Response> {
+  const forbidden = guardApiRequest(request);
+  if (forbidden) return forbidden;
   let release: (() => void) | undefined;
   try {
     const grant = guardRequest(request);

@@ -9,6 +9,7 @@ export function Footer({ locale }: { locale: Locale }) {
       title: dict.footer.columns.product,
       links: [
         { href: localePath(locale, '/convert'), label: dict.footer.links.converter },
+        { href: localePath(locale, '/library'), label: dict.footer.links.library },
         { href: localePath(locale, '/#formats'), label: dict.footer.links.formats },
         { href: localePath(locale, '/convert/epub-to-mobi'), label: dict.footer.links.pairPages },
       ],
@@ -17,6 +18,7 @@ export function Footer({ locale }: { locale: Locale }) {
       title: dict.footer.columns.resources,
       links: [
         { href: localePath(locale, '/docs'), label: dict.footer.links.docs },
+        { href: localePath(locale, '/settings'), label: dict.footer.links.settings },
         { href: localePath(locale, '/green'), label: dict.footer.links.selfHost },
         { href: localePath(locale, '/green'), label: dict.footer.links.noTracking },
       ],

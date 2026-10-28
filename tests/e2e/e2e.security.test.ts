@@ -9,6 +9,7 @@
 import { describe, expect, it } from 'vitest';
 import { createConnection } from 'node:net';
 import JSZip from 'jszip';
+import { POST as CONVERT_POST } from '../../app/api/convert/route';
 
 const BASE = process.env.KF_BASE ?? 'http://127.0.0.1:3100';
 const HOST = new URL(BASE).hostname;
@@ -176,13 +177,25 @@ describe.skipIf(!up)('e2e: 安全边界', () => {
       expect(body.error?.code).toBe('INVALID_OPTIONS');
     });
 
-    it('Content-Length 超过 200MB → 立刻 413（不读 body）', async () => {
+    // Next 15 / undici 在 middleware 之前就会等待声明的请求体，所以「只有
+    // Content-Length、没有 body」的原始 HTTP 请求到不了 handler（详见
+    // AUDIT-V2 P2 记录）。这里直接调用 route handler，验证第一段预检本身
+    // 仍然在读取 body 之前返回 413 —— 这是真实 HTTP 路径下不可观测、但
+    // 代码里必须存在的防线。
+    it('Content-Length 超过 200MB → handler 预检立刻 413（不读 body）', async () => {
       const declared = 210 * 1024 * 1024;
-      const res = await rawRequest(
-        `Content-Type: multipart/form-data; boundary=x\r\nContent-Length: ${declared}\r\n\r\n`,
+      const res = await CONVERT_POST(
+        new Request(`${BASE}/api/convert`, {
+          method: 'POST',
+          headers: {
+            'content-type': 'multipart/form-data; boundary=x',
+            'content-length': String(declared),
+          },
+        }),
       );
       expect(res.status).toBe(413);
-      expect(res.body).toContain('TOO_LARGE');
+      const body = (await res.json()) as { error?: { code: string } };
+      expect(body.error?.code).toBe('TOO_LARGE');
     });
 
     it('没有 Content-Length 的 chunked 上传 → 411（防内存放大）', async () => {

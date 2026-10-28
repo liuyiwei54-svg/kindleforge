@@ -617,3 +617,14 @@ export async function convert(
 export { FORMAT_INFO, capabilities, getDevice };
 export { guessTitleFromFilename } from './model';
 export type { Capability, KindleOptions } from './types';
+
+/* v2 metadata helpers. The EPUB rewrite itself is Node-only and lives in
+ * `lib/engine/node/epub-meta.ts`; this module only exports the pure parts so the
+ * browser bundle stays free of JSZip-based package editing. */
+export { extractIsbn, guessMetadata, isbnToUrn, isValidIsbn, normalizeIsbn } from './metadata';
+export type {
+  ApplyEpubMetadataResult,
+  EpubCoverPatch,
+  EpubMetadataPatch,
+  GuessedMetadata,
+} from './metadata';

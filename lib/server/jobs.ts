@@ -371,11 +371,27 @@ export class JobStore {
         }),
         timeout,
       ]);
-      this.update(id, {
+      const completed: Job = {
+        ...job,
         status: 'done',
         progress: 100,
         engine: result.engine,
         warnings: result.warnings,
+        durationMs: result.durationMs,
+        resultPath: result.resultPath,
+        resultName: result.resultName,
+        resultMime: result.resultMime,
+        resultSize: result.resultSize,
+      };
+      // Auto-save runs before the job flips to done, so a client that sees
+      // "done" can immediately list the library and find the book. A library
+      // failure is a warning, never a conversion failure.
+      const autoSaveWarnings = await this.autoSave(completed);
+      this.update(id, {
+        status: 'done',
+        progress: 100,
+        engine: result.engine,
+        warnings: [...result.warnings, ...autoSaveWarnings],
         durationMs: result.durationMs,
         resultPath: result.resultPath,
         resultName: result.resultName,
@@ -397,6 +413,29 @@ export class JobStore {
         /* rate-limit release must never break the worker */
       }
       this.startQueued();
+    }
+  }
+
+  /**
+   * Save a completed conversion into the local library when auto-save is on.
+   * Returns warnings to append to the job; never throws.
+   */
+  private async autoSave(job: Job): Promise<string[]> {
+    // Vitest sets NODE_ENV=test. Skipping by default keeps unrelated API tests
+    // from writing into the developer's real home directory; the v2 tests that
+    // exercise auto-save opt in with KF_AUTOSAVE_IN_TESTS=1.
+    if (process.env.NODE_ENV === 'test' && process.env.KF_AUTOSAVE_IN_TESTS !== '1') return [];
+    try {
+      const settings = await (await import('./settings')).getSettings();
+      if (!settings.library.autoSave) return [];
+      const { saveJobResult } = await import('./library');
+      await saveJobResult(job);
+      return [];
+    } catch (error) {
+      const message = error instanceof Error ? error.message.split('\n')[0] : '';
+      return [
+        `Auto-save to library failed${message ? `: ${redactServerPaths(message).slice(0, 160)}` : ''}`,
+      ];
     }
   }
 
